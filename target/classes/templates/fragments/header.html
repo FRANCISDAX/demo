@@ -1,0 +1,53 @@
+<div th:fragment="header(title)">
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top bg-white shadow-sm border-bottom">
+        <div class="container">
+
+            <!-- Logo -->
+            <a class="navbar-brand fw-bold text-warning d-flex align-items-center" th:href="@{/}">
+                <i class="bi bi-shop me-2"></i> MiTienda
+            </a>
+
+            <!-- Botón responsive -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <!-- Menú principal -->
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav mx-auto mb-0 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link px-3"
+                           th:href="@{/}"
+                           th:classappend="${currentUri == '/'} ? 'active fw-semibold text-primary' : ''">
+                           Inicio</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3"
+                           th:href="@{/productos}"
+                           th:classappend="${currentUri == '/productos'} ? 'active fw-semibold text-primary' : ''">
+                           Productos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3"
+                           th:href="@{/nosotros}"
+                           th:classappend="${currentUri == '/nosotros'} ? 'active fw-semibold text-primary' : ''">
+                           Nosotros</a>
+                    </li>
+                </ul>
+
+                <!-- Buscador -->
+                <form class="d-flex ms-auto" th:action="@{/productos/buscar}" method="get">
+                    <input class="form-control rounded-pill me-2 border-primary" type="search" name="q"
+                           placeholder="Buscar productos...">
+                    <button class="btn btn-primary rounded-pill px-4" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Espaciado para que el contenido no quede oculto por el navbar fijo -->
+    <div style="height: 60px;"></div>
+</div>
