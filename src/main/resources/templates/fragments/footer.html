@@ -1,0 +1,49 @@
+<footer th:fragment="footer" class="bg-dark text-light pt-5 pb-4 mt-5">
+    <div class="container">
+        <div class="row gy-4">
+
+            <!-- Marca -->
+            <div class="col-md-4">
+                <h5 class="fw-bold text-warning mb-3">
+                    <i class="bi bi-shop me-2"></i>MiTienda
+                </h5>
+                <p class="small text-secondary">
+                    La mejor tienda online para todos tus productos.
+                    Encuentra variedad, calidad y precios increíbles.
+                </p>
+            </div>
+
+            <!-- Enlaces -->
+            <div class="col-md-4">
+                <h5 class="fw-semibold mb-3">Enlaces</h5>
+                <ul class="list-unstyled">
+                    <li><a th:href="@{/}" class="text-secondary text-decoration-none d-block mb-1">Inicio</a></li>
+                    <li><a th:href="@{/productos}" class="text-secondary text-decoration-none d-block mb-1">Productos</a></li>
+                    <li><a th:href="@{/nosotros}" class="text-secondary text-decoration-none d-block mb-1">Nosotros</a></li>
+                    <li><a href="#" class="text-secondary text-decoration-none d-block">Política de privacidad</a></li>
+                </ul>
+            </div>
+
+            <!-- Contacto -->
+            <div class="col-md-4">
+                <h5 class="fw-semibold mb-3">Contacto</h5>
+                <p class="mb-1"><i class="bi bi-envelope me-2"></i> 12440052@elitec.edu.pe</p>
+                <p class="mb-3"><i class="bi bi-telephone me-2"></i> +51 925 066 866</p>
+
+                <!-- Redes sociales -->
+                <div class="d-flex gap-3">
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-facebook"></i></a>
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-instagram"></i></a>
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-twitter-x"></i></a>
+                    <a href="#" class="text-secondary fs-5"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+
+        </div>
+
+        <hr class="border-light opacity-25 mt-5">
+        <p class="text-center text-secondary small mb-0">
+            &copy; 2025 MiTienda. Todos los derechos reservados. CiberSoft.
+        </p>
+    </div>
+</footer>
