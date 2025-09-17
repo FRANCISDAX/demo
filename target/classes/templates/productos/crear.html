@@ -44,6 +44,11 @@
                 <div class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
             </div>
 
+            <div class="form-check mb-3">
+                <input id="destacado" type="checkbox" th:field="*{destacado}" class="form-check-input">
+                <label for="destacado" class="form-check-label">Marcar como producto destacado</label>
+            </div>
+
             <button type="submit" class="btn btn-success">Guardar</button>
             <a th:href="@{/productos}" class="btn btn-secondary">Cancelar</a>
         </form>

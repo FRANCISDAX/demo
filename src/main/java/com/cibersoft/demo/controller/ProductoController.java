@@ -26,20 +26,25 @@ public class ProductoController {
     private ProductoService productoService;
 
     // Página principal
-    @GetMapping({"/", "/nosotros"})
+    @GetMapping({"/", "/nosotros", "/politicas"})
     public String page(HttpServletRequest request, Model model) {
         String uri = request.getRequestURI();
         model.addAttribute("currentUri", uri);
 
         if ("/".equals(uri)) {
-            List<Producto> productos = productoService.obtenerTodos();
-            model.addAttribute("productos", productos);
+            List<Producto> productosDestacados = productoService.obtenerDestacados();
+            model.addAttribute("productosDestacados", productosDestacados);
             return "index";
         }
 
         if ("/nosotros".equals(uri)) {
             return "nosotros";
         }
+
+        if ("/politicas".equals(uri)) {
+            return "politicas";
+        }
+
         return "index";
     }
 

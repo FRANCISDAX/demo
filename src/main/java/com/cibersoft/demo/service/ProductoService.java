@@ -19,6 +19,10 @@ public class ProductoService {
         return productoRepository.findAll();
     }
 
+    public List<Producto> obtenerDestacados(){
+        return productoRepository.findByDestacado(true);
+    }
+
     public Optional<Producto> obtenerPorId(Long id){
         return productoRepository.findById(id);
     }

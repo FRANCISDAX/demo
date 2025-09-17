@@ -48,4 +48,9 @@ public class Producto {
     @NotBlank(message = "La categoria es obligatoria")
     @Column(nullable = false, length = 100)
     private String categoria;
+
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean destacado = false;
+
 }

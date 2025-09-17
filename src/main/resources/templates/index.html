@@ -12,37 +12,20 @@
         <div th:replace="~{fragments/header :: header('Inicio')}"></div>
 
         <main>
-            
+        
             <!-- Hero / Jumbotron mejorado -->
-            <section class="hero text-gray py-5 mb-5">    
-                <div class="container d-flex flex-column flex-md-row align-items-center justify-content-between">
-            
-                    <!-- Texto -->
-                    <div class="text-center text-md-start mb-4 mb-md-0">
-                        <h1 class="display-4 fw-bold mb-3">Bienvenido a <span class="text-warning">MiTienda</span></h1>
-                        <p class="lead mb-4">Tu destino para encontrar los mejores productos al mejor precio.</p>
-                        <a class="btn btn-warning btn-lg fw-semibold text-dark px-4" th:href="@{/productos}">Ver Productos</a>
-                    </div>
-
-                    <!-- Imagen decorativa (puedes poner una tuya) -->
-                    <div class="d-none d-md-block ms-4">
-                        <img src="https://cdn-icons-png.flaticon.com/512/3081/3081559.png" 
-                            alt="Compras" class="img-fluid" style="max-width: 260px;">
-                    </div>
-
-                </div>
-            </section>
+             <div th:replace="~{fragments/hero :: hero}"></div>
 
             <!-- Productos destacados -->
             <div class="container">
                 <h2 class="mb-4">Productos Destacados</h2>
 
-                <div th:if="${productos.empty}" class="alert alert-info">
+                <div th:if="${productosDestacados.empty}" class="alert alert-info">
                     No hay productos destacados disponibles en este momento.
                 </div>
 
-                <div th:unless="${productos.empty}" class="row">
-                    <div th:each="producto : ${productos}" class="col-md-4 mb-4">
+                <div th:unless="${productosDestacados.empty}" class="row">
+                    <div th:each="producto : ${productosDestacados}" class="col-md-4 mb-4">
                         <div class="card h-100 shadow-sm border-0">
                             <div class="card-body">
                                 <h5 class="card-title fw-bold" th:text="${producto.nombre}">Nombre del producto</h5>
