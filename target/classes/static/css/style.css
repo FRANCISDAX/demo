@@ -20,7 +20,7 @@ main {
 }
 
 .hero {
-    background-image: url('../images/bg.png') center/cover no-repeat;
+    /* background-image: url('/images/bg.png') center/cover no-repeat; */
     color: #fff;
     position: relative;
 }

@@ -1,6 +1,12 @@
 com\cibersoft\demo\service\ProductoService.class
-com\cibersoft\demo\entity\Producto.class
 com\cibersoft\demo\DemoApplication.class
 com\cibersoft\demo\repository\ProductoRepository.class
-com\cibersoft\demo\controller\ProductoController.class
 com\cibersoft\demo\entity\Producto$ProductoBuilder.class
+com\cibersoft\demo\service\UsuarioService.class
+com\cibersoft\demo\entity\Usuario$UsuarioBuilder.class
+com\cibersoft\demo\entity\Producto.class
+com\cibersoft\demo\controller\ProductoController.class
+com\cibersoft\demo\controller\AuthController.class
+com\cibersoft\demo\entity\Usuario.class
+com\cibersoft\demo\repository\UsuarioRepository.class
+com\cibersoft\demo\config\SecurityConfig.class
