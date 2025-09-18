@@ -33,6 +33,12 @@
                            th:classappend="${currentUri == '/nosotros'} ? 'active fw-semibold text-primary' : ''">
                            Nosotros</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3"
+                           th:href="@{/compras}"
+                           th:classappend="${currentUri == '/compras'} ? 'active fw-semibold text-primary' : ''">
+                           Compras</a>
+                    </li>
                 </ul>
 
                 <!-- Buscador -->
@@ -43,8 +49,26 @@
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
-            </div>
 
+                <!-- Mostrar solo si NO está autenticado -->
+                <div class="nav-item" sec:authorize="!isAuthenticated()">
+                    <a class="nav-link" th:href="@{/login}">Iniciar Sesión</a>
+                </div>
+
+                <!-- Mostrar solo si está autenticado -->
+                <div class="nav-item d-flex align-items-center me-2" sec:authorize="isAuthenticated()">
+                    <span class="text-dark">
+                        👋 <span sec:authentication="principal.username"></span>
+                    </span>
+                </div>
+                <div class="nav-item" sec:authorize="isAuthenticated()">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-danger btn-sm">Cerrar sesión</button>
+                    </form>
+                </div>
+
+            </div>
+            
         </div>
     </nav>
 

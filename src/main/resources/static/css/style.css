@@ -20,9 +20,9 @@ main {
 }
 
 .hero {
-  background: url('../images/bg.png') center/cover no-repeat;
-  color: #fff;
-  position: relative;
+    background-image: url('../images/bg.png') center/cover no-repeat;
+    color: #fff;
+    position: relative;
 }
 
 .hero::after {
@@ -34,7 +34,7 @@ main {
 
 .hero > .container {
   position: relative;
-  z-index: 1; /* Pone el texto encima de la capa oscura */
+  z-index: 1;
 }
 
 .card {
