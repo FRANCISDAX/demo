@@ -18,16 +18,19 @@ public class SecurityConfig {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/", "/nosotros", "/politicas", "/registro", "/css/**", "/js/**", "/images/**")
                 .permitAll()
+                .requestMatchers("/admin/**")
+                .hasRole("ADMIN")
                 .requestMatchers("/productos/**", "/compras/**", "/carrito/**")
-                .authenticated()
+                .hasAnyRole("USER","ADMIN")
                 .anyRequest()
+                .authenticated()
             )
             .formLogin(form -> form
                 .loginPage("/login")
                 .usernameParameter("email")
                 .passwordParameter("password")
                 .failureUrl("/login?error")
-                .defaultSuccessUrl("/", true)
+                .defaultSuccessUrl("/", false)
                 .permitAll()
             )
             .logout(logout -> logout
@@ -46,5 +49,5 @@ public class SecurityConfig {
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
+    
 }

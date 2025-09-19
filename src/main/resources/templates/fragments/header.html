@@ -15,37 +15,60 @@
             <!-- Menú principal -->
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav mx-auto mb-0 mb-lg-0">
+
+                    <!-- Enlaces generales -->
                     <li class="nav-item">
                         <a class="nav-link px-3"
                            th:href="@{/}"
-                           th:classappend="${currentUri == '/'} ? 'active fw-semibold text-primary' : ''">
-                           Inicio</a>
+                           th:classappend="${currentUri == '/'} ? 'active fw-semibold text-primary' : ''">Inicio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3"
                            th:href="@{/productos}"
-                           th:classappend="${currentUri == '/productos'} ? 'active fw-semibold text-primary' : ''">
-                           Productos</a>
+                           th:classappend="${currentUri == '/productos'} ? 'active fw-semibold text-primary' : ''">Productos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link px-3"
                            th:href="@{/nosotros}"
-                           th:classappend="${currentUri == '/nosotros'} ? 'active fw-semibold text-primary' : ''">
-                           Nosotros</a>
+                           th:classappend="${currentUri == '/nosotros'} ? 'active fw-semibold text-primary' : ''">Nosotros</a>
                     </li>
-                    <li class="nav-item">
+
+                    <!-- Compras solo para USER o ADMIN -->
+                    <li class="nav-item" sec:authorize="hasAnyRole('USER','ADMIN')">
                         <a class="nav-link px-3"
                            th:href="@{/compras}"
-                           th:classappend="${currentUri == '/compras'} ? 'active fw-semibold text-primary' : ''">
-                           Compras</a>
+                           th:classappend="${currentUri == '/compras'} ? 'active fw-semibold text-primary' : ''">Compras</a>
                     </li>
+
+                    <!-- Carrito solo para USER -->
+                    <li class="nav-item" sec:authorize="hasRole('USER')">
+                        <a class="nav-link px-3"
+                           th:href="@{/carrito}"
+                           th:classappend="${currentUri == '/carrito'} ? 'active fw-semibold text-primary' : ''">
+                           <i class="bi bi-cart"></i> Mi Carrito</a>
+                    </li>
+
+                    <!-- Menú administrativo solo para ADMIN -->
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
+                        <a class="nav-link dropdown-toggle px-3" href="#" id="adminDropdown" role="button" data-bs-toggle="dropdown">
+                            Panel Admin
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="adminDropdown">
+                            <li><a class="dropdown-item" th:href="@{/admin/usuarios}">Usuarios</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin/productos}">Productos</a></li>
+                            <li><a class="dropdown-item" th:href="@{/admin/compras}">Compras</a></li>
+                        </ul>
+                    </li>
+
                 </ul>
 
                 <!-- Buscador -->
-                <form class="d-flex ms-auto" th:action="@{/productos/buscar}" method="get">
-                    <input class="form-control rounded-pill me-2 border-primary" type="search" name="q"
-                           placeholder="Buscar productos...">
-                    <button class="btn btn-primary rounded-pill px-4" type="submit">
+                <form class="d-flex mb-3 mt-3 me-3" th:action="@{/productos/buscar}" method="get">
+                    <input placeholder="Buscar Productos..."
+                        class="form-control input-buscar"
+                        type="search"
+                        name="q">
+                    <button class="btn btn-buscar" type="submit">
                         <i class="bi bi-search"></i>
                     </button>
                 </form>
@@ -68,10 +91,9 @@
                 </div>
 
             </div>
-            
         </div>
     </nav>
 
     <!-- Espaciado para que el contenido no quede oculto por el navbar fijo -->
-    <div style="height: 60px;"></div>
+    <div style="height: 80px;"></div>
 </div>

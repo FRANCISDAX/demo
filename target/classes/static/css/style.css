@@ -67,6 +67,33 @@ main {
     border-radius: 0.5rem;
 }
 
+.input-buscar {
+    border-radius: 30px 0 0 30px;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+    padding: 0 20px;
+}
+
+.input-buscar:focus{
+    border: 1px solid #ffc107;
+    box-shadow: none;
+    outline: none;
+}
+
+.btn-buscar {
+    border-radius: 0 30px 30px 0;
+    background-color:#ffc107;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+}
+
+.bnt-buscar:hover {
+    background-color: #e85c00;
+}
+
 footer {
     background-color: #212529;
     color: white;
