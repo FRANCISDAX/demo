@@ -1,0 +1,34 @@
+<div th:fragment="content">
+    <h2>Editar Usuario</h2>
+
+    <form th:action="@{/admin/usuarios/editar/{id}(id=${usuario.id})}" 
+          method="post" 
+          th:object="${usuario}">
+        
+        <div class="mb-3">
+            <label class="form-label">Nombre de usuario</label>
+            <input class="form-control" type="text" th:field="*{nombre}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" th:field="*{email}" required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Contraseña (dejar en blanco si no desea cambiarla)</label>
+            <input class="form-control" type="password" th:field="*{password}">
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Rol</label>
+            <select class="form-select" th:field="*{rol}">
+                <option th:value="ADMIN">ADMIN</option>
+                <option th:value="USER">USER</option>
+            </select>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Actualizar</button>
+        <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Cancelar</a>
+    </form>
+</div>

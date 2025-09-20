@@ -41,16 +41,42 @@ public class AdminController {
     }
 
     @PostMapping("/usuarios/nuevo")
-    public String guardarUsuario(@ModelAttribute Usuario usuario) { return "redirect:/admin/usuarios"; }
+    public String guardarUsuario(@ModelAttribute Usuario usuario) {
+        usuarioService.guardarUsuario(usuario);
+        return "redirect:/admin/usuarios";
+    }
 
     @GetMapping("/usuarios/editar/{id}")
-    public String editarUsuarioForm(@PathVariable Long id, Model model) { return "admin/usuarios/editar"; }
+    public String editarUsuarioForm(@PathVariable Long id, Model model) {
+    Usuario usuario = usuarioService.obtenerUsuarioPorId(id);
+
+        model.addAttribute("title", "Editar Usuario");
+        model.addAttribute("usuario", usuario);
+        model.addAttribute("contenido", "admin/usuarios/editar");
+
+        return "admin/usuarios/layout";
+}
 
     @PostMapping("/usuarios/editar/{id}")
-    public String guardarUsuarioEditado(@PathVariable Long id, @ModelAttribute Usuario usuario) { return "redirect:/admin/usuarios"; }
+    public String guardarUsuarioEditado(@PathVariable Long id, @ModelAttribute Usuario usuario) {
+        Usuario usuarioExistente = usuarioService.obtenerUsuarioPorId(id);
+        
+        if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+            usuario.setPassword(usuarioExistente.getPassword());
+        } else {
+            usuario.setPassword((usuario.getPassword()));
+        }
+
+        usuario.setId(id);
+        usuarioService.guardarUsuario(usuario);
+        return "redirect:/admin/usuarios";
+    }
 
     @PostMapping("/usuarios/eliminar/{id}")
-    public String eliminarUsuario(@PathVariable Long id) { return "redirect:/admin/usuarios"; }
+    public String eliminarUsuario(@PathVariable Long id) {
+        usuarioService.eliminarUsuario(id);
+        return "redirect:/admin/usuarios";
+    }
 
     // Productos
     @GetMapping("/productos")

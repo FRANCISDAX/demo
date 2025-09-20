@@ -10,7 +10,7 @@
     <!-- Favicon -->
     <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
 </head>
-<body>
+<body class="bg-light">
     
     <div class="layout">
 
@@ -19,6 +19,16 @@
 
         <main>
         
+            <div th:if="${param.expired}" class="alert alert-warning m-4">
+                ⏳ Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión.
+            </div>
+
+            <div th:if="${param.concurrent}" class="alert alert-danger m-4">
+                ⚠️ Tu sesión fue cerrada porque iniciaste sesión en otro dispositivo.
+                <b th:text="${param.device}">otro dispositivo</b>
+                (IP: <span th:text="${param.ip}"></span>).
+            </div>
+
             <!-- Hero / Jumbotron mejorado -->
              <div th:replace="~{fragments/hero :: hero}"></div>
 

@@ -11,22 +11,22 @@
         </div>
 
         <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" type="email" th:field="*{email}" name="nuevo-email" autocomplete="off" required>
+        </div>
+
+        <div class="mb-3">
             <label class="form-label">Contraseña</label>
             <input class="form-control" type="password" th:field="*{password}" name="nuevo-password" autocomplete="new-password" required>
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input class="form-control" type="email" th:field="*{email}" name="nuevo-email" autocomplete="off" required>
-        </div>
-
-        <!-- <div class="mb-3">
             <label class="form-label">Rol</label>
-            <select class="form-select" th:field="*{rol.nombre}">
+            <select class="form-select" th:field="*{rol}">
                 <option value="ADMIN">ADMIN</option>
                 <option value="USER">USER</option>
             </select>
-        </div>  -->
+        </div>
 
         <button class="btn btn-primary" type="submit">Guardar</button>
         <a class="btn btn-secondary" th:href="@{/admin/usuarios}">Cancelar</a>

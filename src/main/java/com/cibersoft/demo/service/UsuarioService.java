@@ -40,7 +40,29 @@ public class UsuarioService implements UserDetailsService {
     public List<Usuario> listarUsuarios() {
         return usuarioRepository.findAll();
     }
-    
+
+    // -------------------------------
+    // Grabar usuario
+    // -------------------------------
+    public Usuario guardarUsuario(Usuario usuario) {
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        return usuarioRepository.save(usuario);
+    }
+
+    // -------------------------------
+    // Borrar usuario
+    // -------------------------------
+    public void eliminarUsuario(Long id) {
+        usuarioRepository.deleteById(id);
+    }
+
+    // -------------------------------
+    // Buscar usuario por ID
+    // -------------------------------
+    public Usuario obtenerUsuarioPorId(Long id) {
+        return usuarioRepository.findById(id).orElse(null);
+    }
+
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         Usuario usuario = usuarioRepository.findByEmail(email)
