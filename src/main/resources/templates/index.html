@@ -25,7 +25,7 @@
 
             <div th:if="${param.concurrent}" class="alert alert-danger m-4">
                 ⚠️ Tu sesión fue cerrada porque iniciaste sesión en otro dispositivo.
-                <b th:text="${param.device}">otro dispositivo</b>
+                <b th:text="${param.device}"></b>
                 (IP: <span th:text="${param.ip}"></span>).
             </div>
 
