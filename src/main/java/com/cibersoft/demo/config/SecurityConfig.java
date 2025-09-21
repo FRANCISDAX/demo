@@ -16,11 +16,11 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/", "/nosotros", "/politicas", "/registro", "/css/**", "/js/**", "/images/**")
+                .requestMatchers("/", "/productos", "/productos/buscar", "/nosotros", "/politicas", "/registro", "/css/**", "/js/**", "/images/**")
                 .permitAll()
                 .requestMatchers("/admin/**")
                 .hasRole("ADMIN")
-                .requestMatchers("/productos/**", "/compras/**", "/carrito/**")
+                .requestMatchers("/compras/**", "/carrito/**")
                 .hasAnyRole("USER","ADMIN")
                 .anyRequest()
                 .authenticated()

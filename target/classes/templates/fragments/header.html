@@ -64,6 +64,8 @@
 
                 <!-- Buscador -->
                 <form class="d-flex mb-3 mt-3 me-3" th:action="@{/productos/buscar}" method="get">
+                    <!-- Si estamos en el index, buscar solo entre destacados -->
+                    <!-- <input type="hidden" name="destacados" th:value="${currentUri == '/'} ? 'true' : 'false'"/> -->
                     <input placeholder="Buscar Productos..."
                         class="form-control input-buscar"
                         type="search"

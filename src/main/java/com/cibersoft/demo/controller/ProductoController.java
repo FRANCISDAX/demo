@@ -1,9 +1,9 @@
 package com.cibersoft.demo.controller;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cibersoft.demo.entity.Producto;
@@ -25,8 +26,8 @@ public class ProductoController {
     @Autowired
     private ProductoService productoService;
 
-    // Página principal
-    @GetMapping({"/", "/nosotros", "/politicas"})
+ // ---------------------- PUBLICAS ----------------------
+    @GetMapping({"/", "/productos", "/nosotros", "/politicas"})
     public String page(HttpServletRequest request, Model model) {
         String uri = request.getRequestURI();
         model.addAttribute("currentUri", uri);
@@ -35,6 +36,12 @@ public class ProductoController {
             List<Producto> productosDestacados = productoService.obtenerDestacados();
             model.addAttribute("productosDestacados", productosDestacados);
             return "index";
+        }
+
+        if ("/productos".equals(uri)) {
+            List<Producto> productos = productoService.obtenerTodos();
+            model.addAttribute("productos", productos);
+            return "productos";
         }
 
         if ("/nosotros".equals(uri)) {
@@ -48,72 +55,67 @@ public class ProductoController {
         return "index";
     }
 
-    // Listar productos
-    @GetMapping("/productos")
-    public String listarProductos(Model model) {
-        model.addAttribute("productos", productoService.obtenerTodos());
-        return "productos/listar";
-    }
-
-    // Buscar productos
     @GetMapping("/productos/buscar")
-    public String buscarProductos(@RequestParam("q") String query, Model model) {
-        List<Producto> resultados = productoService.buscarPorNombre(query);
+    public String buscarProductosPublico(@RequestParam("q") String query,
+                                         @RequestParam(value = "destacados", defaultValue = "false") boolean destacados,
+                                         Model model) {
+        List<Producto> resultados;
+        if (destacados) {
+            resultados = productoService.buscarPorCategoria(query);
+        } else {
+            resultados = productoService.buscarPorNombre(query);
+        }
         model.addAttribute("productos", resultados);
         model.addAttribute("query", query);
-        return "productos/listar";
+        return destacados ? "index" : "productos";
     }
 
-    // Formulario crear producto
-    @GetMapping("/productos/crear")
-    public String mostrarFormularioCrear(Model model) {
-        model.addAttribute("producto", new Producto());
-        return "productos/crear";
-    }
+    // ---------------------- ADMIN ----------------------
+    @Controller
+    @RequestMapping("/admin/productos")
+    @PreAuthorize("hasRole('ADMIN')")
+    public class AdminProductoController {
 
-    // Guardar producto
-    @PostMapping("/productos/guardar")
-    public String guardarProducto(@Valid @ModelAttribute Producto producto, 
-                                BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "productos/crear";
+        @Autowired
+        private ProductoService productoService;
+
+        @GetMapping
+        public String listarProductos(Model model) {
+             model.addAttribute("productos", productoService.obtenerTodos());
+             return "admin/productos/listar";
         }
-        productoService.guardar(producto);
-        return "redirect:/productos?exito";
-    }
 
-    // Formulario editar producto
-    @GetMapping("/productos/editar/{id}")
-    public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
-        Optional<Producto> producto = productoService.obtenerPorId(id);
-        if (producto.isPresent()) {
-            model.addAttribute("producto", producto.get());
-            return "productos/editar";
+        @GetMapping("/crear")
+        public String mostrarFormularioCrear(Model model) {
+            model.addAttribute("producto", new Producto());
+            return "admin/productos/crear";
         }
-        return "redirect:/productos?error";
-    }
 
-    // Actualizar producto
-    @PostMapping("/productos/actualizar/{id}")
-    public String actualizarProducto(@PathVariable Long id, 
-                                   @Valid @ModelAttribute Producto producto,
-                                   BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            producto.setId(id);
-            return "productos/editar";
+        @PostMapping("/guardar")
+        public String guardarProducto(@Valid @ModelAttribute Producto producto, BindingResult result) {
+            if (result.hasErrors()) return "/admin/productos/crear";
+            productoService.guardar(producto);
+            return "redirect:/admin/productos?exito";
         }
-        productoService.guardar(producto);
-        return "redirect:/productos?actualizado";
-    }
 
-    // Eliminar producto
-    @GetMapping("/productos/eliminar/{id}")
-    public String eliminarProducto(@PathVariable Long id) {
-        if (productoService.existe(id)) {
-            productoService.eliminar(id);
-            return "redirect:/productos?eliminado";
+        @GetMapping("/editar/{id}")
+        public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
+            productoService.obtenerPorId(id).ifPresent(p -> model.addAttribute("producto", p));
+            return "admin/productos/editar";
         }
-        return "redirect:/productos?error";
+
+        @PostMapping("/actualizar/{id}")
+        public String actualizarProducto(@PathVariable Long id, @Valid @ModelAttribute Producto producto, BindingResult result) {
+            if (result.hasErrors()) return "/admin/productos/editar";
+            productoService.guardar(producto);
+            return "redirect:/admin/productos?actualizado";
+        }
+
+        @GetMapping("/eliminar/{id}")
+        public String eliminarProducto(@PathVariable Long id) {
+            if (productoService.existe(id)) productoService.eliminar(id);
+            return "redirect:/admin/productos?eliminado";
+        }
     }
 
 }

@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.cibersoft.demo.entity.Producto;
 import com.cibersoft.demo.entity.Usuario;
 import com.cibersoft.demo.service.UsuarioService;
 
@@ -77,25 +76,6 @@ public class AdminController {
         usuarioService.eliminarUsuario(id);
         return "redirect:/admin/usuarios";
     }
-
-    // Productos
-    @GetMapping("/productos")
-    public String listarProductosAdmin(Model model) { return "admin/productos/lista"; }
-
-    @GetMapping("/productos/nuevo")
-    public String nuevoProductoForm(Model model) { return "admin/productos/nuevo"; }
-
-    @PostMapping("/productos/nuevo")
-    public String guardarProducto(@ModelAttribute Producto producto) { return "redirect:/admin/productos"; }
-
-    @GetMapping("/productos/editar/{id}")
-    public String editarProductoForm(@PathVariable Long id, Model model) { return "admin/productos/editar"; }
-
-    @PostMapping("/productos/editar/{id}")
-    public String guardarProductoEditado(@PathVariable Long id, @ModelAttribute Producto producto) { return "redirect:/admin/productos"; }
-
-    @PostMapping("/productos/eliminar/{id}")
-    public String eliminarProducto(@PathVariable Long id) { return "redirect:/admin/productos"; }
 
     // Compras
     @GetMapping("/compras")
