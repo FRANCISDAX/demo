@@ -25,8 +25,8 @@
 
             <div th:if="${param.concurrent}" class="alert alert-danger m-4">
                 ⚠️ Tu sesión fue cerrada porque iniciaste sesión en otro dispositivo.
-                <b th:text="${param.device}"></b>
-                (IP: <span th:text="${param.ip}"></span>).
+                <b th:text="${param.device}">Otro Navegador</b>
+                (IP: <span th:text="${param.ip}">0.0.0.0</span>).
             </div>
 
             <!-- Hero / Jumbotron mejorado -->

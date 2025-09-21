@@ -12,12 +12,6 @@ import org.springframework.security.web.SecurityFilterChain;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final CustomSessionExpiredStrategy customSessionExpiredStrategy;
-
-    public SecurityConfig(CustomSessionExpiredStrategy customSessionExpiredStrategy) {
-        this.customSessionExpiredStrategy = customSessionExpiredStrategy;
-    }
-
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
@@ -52,7 +46,7 @@ public class SecurityConfig {
                 .maximumSessions(1)
                 .maxSessionsPreventsLogin(false)
                 .expiredUrl("/?concurrent=true")
-                .expiredSessionStrategy(customSessionExpiredStrategy)
+                .expiredSessionStrategy(new CustomSessionExpiredStrategy())
             );
 
         return http.build();
