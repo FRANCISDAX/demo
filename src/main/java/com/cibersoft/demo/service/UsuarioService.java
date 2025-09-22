@@ -45,8 +45,23 @@ public class UsuarioService implements UserDetailsService {
     // Grabar usuario
     // -------------------------------
     public Usuario guardarUsuario(Usuario usuario) {
-        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        if (usuario.getId() == null) {
+            usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+        } else {
+            Usuario existente = usuarioRepository.findById(usuario.getId())
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado"));
+
+            if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
+                usuario.setPassword(existente.getPassword());
+            } else {
+                if (!usuario.getPassword().startsWith("$2a$")) {
+                    usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
+                }
+            }
+        }
+
         return usuarioRepository.save(usuario);
+        
     }
 
     // -------------------------------

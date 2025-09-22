@@ -58,15 +58,6 @@ public class AdminController {
 
     @PostMapping("/usuarios/editar/{id}")
     public String guardarUsuarioEditado(@PathVariable Long id, @ModelAttribute Usuario usuario) {
-        Usuario usuarioExistente = usuarioService.obtenerUsuarioPorId(id);
-        
-        if (usuario.getPassword() == null || usuario.getPassword().isBlank()) {
-            usuario.setPassword(usuarioExistente.getPassword());
-        } else {
-            usuario.setPassword((usuario.getPassword()));
-        }
-
-        usuario.setId(id);
         usuarioService.guardarUsuario(usuario);
         return "redirect:/admin/usuarios";
     }

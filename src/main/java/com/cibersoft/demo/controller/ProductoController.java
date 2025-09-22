@@ -3,6 +3,7 @@ package com.cibersoft.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -91,12 +92,33 @@ public class ProductoController {
             return "admin/productos/crear";
         }
 
-        @PostMapping("/guardar")
-        public String guardarProducto(@Valid @ModelAttribute Producto producto, BindingResult result) {
-            if (result.hasErrors()) return "/admin/productos/crear";
-            productoService.guardar(producto);
-            return "redirect:/admin/productos?exito";
+        @PostMapping("/crear")
+        public String guardarProducto(@Valid 
+            @ModelAttribute("producto") Producto producto,
+            BindingResult bindingResult,
+            Model model) {
+
+            if (bindingResult.hasErrors()) {
+                return "admin/productos/crear";
+            }
+
+            try {
+                productoService.guardar(producto);
+                model.addAttribute("exito", "✅ Producto registrado correctamente.");
+                return "redirect:/admin/productos";
+            } catch (DataIntegrityViolationException e) {
+                bindingResult.rejectValue("nombre", "error.producto", "⚠️ El nombre del producto ya existe.");
+
+                return "admin/productos/crear";
+            }
         }
+
+        // @PostMapping("/guardar")
+        // public String guardarProducto(@Valid @ModelAttribute Producto producto, BindingResult result) {
+        //     if (result.hasErrors()) return "/admin/productos/crear";
+        //     productoService.guardar(producto);
+        //     return "redirect:/admin/productos?exito";
+        // }
 
         @GetMapping("/editar/{id}")
         public String mostrarFormularioEditar(@PathVariable Long id, Model model) {

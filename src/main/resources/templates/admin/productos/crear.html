@@ -14,7 +14,7 @@
 
         <h2 class="mx-5 my-4">Registrar Nuevo Producto</h2>
 
-        <form th:action="@{/admin/productos/guardar}" th:object="${producto}" method="post" class="needs-validation mx-5" novalidate>
+        <form th:action="@{/admin/productos/crear}" th:object="${producto}" method="post" class="needs-validation mx-5" novalidate>
             <div class="mb-3">
                 <label>Nombre</label>
                 <input id="nombre" type="text" th:field="*{nombre}" class="form-control" required>

@@ -11,14 +11,14 @@
         </div>
 
         <div class="mb-3">
-            <label class="form-label">Email</label>
-            <input class="form-control" type="email" th:field="*{email}" required>
+            <label class="form-label">Email <strong>* De solo lectura</strong></label>
+            <input class="form-control" type="email" th:field="*{email}" readonly>
         </div>
 
-        <div class="mb-3">
+        <!-- <div class="mb-3">
             <label class="form-label">Contraseña (dejar en blanco si no desea cambiarla)</label>
             <input class="form-control" type="password" th:field="*{password}">
-        </div>
+        </div> -->
 
         <div class="mb-3">
             <label class="form-label">Rol</label>
