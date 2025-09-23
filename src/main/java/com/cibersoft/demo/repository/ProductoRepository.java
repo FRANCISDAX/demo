@@ -11,7 +11,13 @@ import com.cibersoft.demo.entity.Producto;
 public interface ProductoRepository extends JpaRepository<Producto, Long> {
 
     List<Producto> findByDestacado(boolean destacado);
-    List<Producto> findByCategoria(String categoria);
-    List<Producto> findByNombreContainingIgnoreCase(String nombre);
+
+    List<Producto> findByNombreContainingAllIgnoreCase(String nombre);
+
+    List<Producto> findByCategoria_Id(Long categoriaId);
+
+    boolean existsByCategoria_Id(Long categoriaId);
+    
+    boolean existsByNombre(String nombre);
     
 }

@@ -39,12 +39,20 @@ public class ProductoService {
         return productoRepository.existsById(id);
     }
 
-    public List<Producto> buscarPorCategoria(String categoria){
-        return productoRepository.findByCategoria(categoria);
+    public boolean existePorNombre(String nombre){
+        return productoRepository.existsByNombre(nombre);
+    }
+
+    public boolean existeCategoriaPorId(Long id){
+        return productoRepository.existsByCategoria_Id(id);
+    }
+
+    public List<Producto> buscarPorCategoriaId(Long idCategoria){
+        return productoRepository.findByCategoria_Id(idCategoria);
     }
 
     public List<Producto> buscarPorNombre(String nombre){
-        return productoRepository.findByNombreContainingIgnoreCase(nombre);
+        return productoRepository.findByNombreContainingAllIgnoreCase(nombre);
     }
 
 }

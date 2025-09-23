@@ -7,8 +7,8 @@ import org.springframework.security.core.userdetails.*;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.cibersoft.demo.entity.Rol;
 import com.cibersoft.demo.entity.Usuario;
+import com.cibersoft.demo.entity.enums.Rol;
 import com.cibersoft.demo.repository.UsuarioRepository;
 
 @Service

@@ -3,7 +3,6 @@ package com.cibersoft.demo.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -14,8 +13,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cibersoft.demo.entity.Producto;
+import com.cibersoft.demo.service.CategoriaService;
 import com.cibersoft.demo.service.ProductoService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -61,11 +62,7 @@ public class ProductoController {
                                          @RequestParam(value = "destacados", defaultValue = "false") boolean destacados,
                                          Model model) {
         List<Producto> resultados;
-        if (destacados) {
-            resultados = productoService.buscarPorCategoria(query);
-        } else {
-            resultados = productoService.buscarPorNombre(query);
-        }
+        resultados = productoService.buscarPorNombre(query);
         model.addAttribute("productos", resultados);
         model.addAttribute("query", query);
         return destacados ? "index" : "productos";
@@ -80,6 +77,9 @@ public class ProductoController {
         @Autowired
         private ProductoService productoService;
 
+        @Autowired
+        private CategoriaService categoriaService;
+
         @GetMapping
         public String listarProductos(Model model) {
              model.addAttribute("productos", productoService.obtenerTodos());
@@ -88,7 +88,9 @@ public class ProductoController {
 
         @GetMapping("/crear")
         public String mostrarFormularioCrear(Model model) {
-            model.addAttribute("producto", new Producto());
+            Producto producto = new Producto();
+            model.addAttribute("producto", producto);
+            model.addAttribute("categorias", categoriaService.listarTodas());
             return "admin/productos/crear";
         }
 
@@ -96,46 +98,54 @@ public class ProductoController {
         public String guardarProducto(@Valid 
             @ModelAttribute("producto") Producto producto,
             BindingResult bindingResult,
+            RedirectAttributes redirectAttributes,
             Model model) {
 
-            if (bindingResult.hasErrors()) {
-                return "admin/productos/crear";
+            if (producto.getCategoria() == null) {
+                bindingResult.rejectValue("categoria", "error.producto", "⚠️ Seleccione una Categoría.");
             }
 
-            try {
-                productoService.guardar(producto);
-                model.addAttribute("exito", "✅ Producto registrado correctamente.");
-                return "redirect:/admin/productos";
-            } catch (DataIntegrityViolationException e) {
+            if (productoService.existePorNombre(producto.getNombre())) {
                 bindingResult.rejectValue("nombre", "error.producto", "⚠️ El nombre del producto ya existe.");
+            }
 
+            if (bindingResult.hasErrors()) {
+                model.addAttribute("categorias", categoriaService.listarTodas());
                 return "admin/productos/crear";
             }
-        }
 
-        // @PostMapping("/guardar")
-        // public String guardarProducto(@Valid @ModelAttribute Producto producto, BindingResult result) {
-        //     if (result.hasErrors()) return "/admin/productos/crear";
-        //     productoService.guardar(producto);
-        //     return "redirect:/admin/productos?exito";
-        // }
+            productoService.guardar(producto);
+            model.addAttribute("exito", "✅ Producto registrado correctamente.");
+            redirectAttributes.addFlashAttribute("successMessage", "Producto registrado correctamente");
+            return "redirect:/admin/productos";
+            
+        }
 
         @GetMapping("/editar/{id}")
         public String mostrarFormularioEditar(@PathVariable Long id, Model model) {
             productoService.obtenerPorId(id).ifPresent(p -> model.addAttribute("producto", p));
+            model.addAttribute("categorias", categoriaService.listarTodas());
             return "admin/productos/editar";
         }
 
         @PostMapping("/actualizar/{id}")
-        public String actualizarProducto(@PathVariable Long id, @Valid @ModelAttribute Producto producto, BindingResult result) {
+        public String actualizarProducto(@PathVariable Long id, 
+            @Valid @ModelAttribute Producto producto,
+            RedirectAttributes redirectAttributes, 
+            BindingResult result) {
             if (result.hasErrors()) return "/admin/productos/editar";
             productoService.guardar(producto);
+            redirectAttributes.addFlashAttribute("successMessage", "Producto actualizado correctamente");
             return "redirect:/admin/productos?actualizado";
         }
 
         @GetMapping("/eliminar/{id}")
-        public String eliminarProducto(@PathVariable Long id) {
-            if (productoService.existe(id)) productoService.eliminar(id);
+        public String eliminarProducto(@PathVariable Long id,
+            RedirectAttributes redirectAttributes) {
+            if (productoService.existe(id)){
+                productoService.eliminar(id);
+                redirectAttributes.addFlashAttribute("successMessage", "Producto eliminado correctamente");
+            } 
             return "redirect:/admin/productos?eliminado";
         }
     }

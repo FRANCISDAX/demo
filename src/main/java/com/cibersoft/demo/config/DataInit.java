@@ -6,8 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cibersoft.demo.entity.Rol;
 import com.cibersoft.demo.entity.Usuario;
+import com.cibersoft.demo.entity.enums.Rol;
 import com.cibersoft.demo.repository.UsuarioRepository;
 
 @Configuration

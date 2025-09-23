@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+    <div th:fragment="notificaciones">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/notyf/notyf.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/notyf/notyf.min.js"></script>
+
+        <script th:inline="javascript">
+            let successMessage = /*[[${successMessage}]]*/ null;
+            let errorMessage = /*[[${errorMessage}]]*/ null;
+            let warningMessage = /*[[${warningMessage}]]*/ null;
+
+            if (successMessage || errorMessage || warningMessage) {
+                const notyf = new Notyf({
+                    duration: 3000,
+                    position: { x: 'center', y: 'top' },
+                    types: [
+                        {
+                            type: 'warning',
+                            background: 'orange',
+                            icon: {
+                                className: 'fas fa-exclamation-triangle',
+                                tagName: 'i',
+                                color: '#fff'
+                            }
+                        },
+                        {
+                            type: 'error',
+                            background: 'red',
+                            icon: {
+                                className: 'fas fa-times-circle',
+                                tagName: 'i',
+                                color: '#fff'
+                            }
+                        }
+                    ]
+                });
+
+                if (successMessage) notyf.success(successMessage);
+                if (errorMessage) notyf.error(errorMessage);
+                if (warningMessage) notyf.open({
+                    type: 'warning',
+                    message: warningMessage
+                });
+            }
+        </script>
+    </div>
+</body>
+</html>

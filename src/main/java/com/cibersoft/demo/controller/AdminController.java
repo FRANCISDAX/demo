@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cibersoft.demo.entity.Usuario;
 import com.cibersoft.demo.service.UsuarioService;
@@ -40,8 +41,11 @@ public class AdminController {
     }
 
     @PostMapping("/usuarios/nuevo")
-    public String guardarUsuario(@ModelAttribute Usuario usuario) {
+    public String guardarUsuario(@ModelAttribute Usuario usuario,
+        RedirectAttributes redirectAttributes,
+        Model model) {
         usuarioService.guardarUsuario(usuario);
+        redirectAttributes.addFlashAttribute("successMessage", "Usuario registrado correctamente");
         return "redirect:/admin/usuarios";
     }
 
@@ -57,14 +61,19 @@ public class AdminController {
 }
 
     @PostMapping("/usuarios/editar/{id}")
-    public String guardarUsuarioEditado(@PathVariable Long id, @ModelAttribute Usuario usuario) {
+    public String guardarUsuarioEditado(@PathVariable Long id,
+        @ModelAttribute Usuario usuario,
+        RedirectAttributes redirectAttributes) {
         usuarioService.guardarUsuario(usuario);
+        redirectAttributes.addFlashAttribute("successMessage", "Usuario actualizado correctamente");
         return "redirect:/admin/usuarios";
     }
 
-    @PostMapping("/usuarios/eliminar/{id}")
-    public String eliminarUsuario(@PathVariable Long id) {
+    @GetMapping("/usuarios/eliminar/{id}")
+    public String eliminarUsuario(@PathVariable Long id,
+        RedirectAttributes redirectAttributes) {
         usuarioService.eliminarUsuario(id);
+        redirectAttributes.addFlashAttribute("successMessage", "Usuario eliminado correctamente");
         return "redirect:/admin/usuarios";
     }
 

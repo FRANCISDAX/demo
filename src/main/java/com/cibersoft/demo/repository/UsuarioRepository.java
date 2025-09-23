@@ -6,8 +6,8 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.cibersoft.demo.entity.Rol;
 import com.cibersoft.demo.entity.Usuario;
+import com.cibersoft.demo.entity.enums.Rol;
 
 @Repository
 public interface UsuarioRepository extends JpaRepository<Usuario, Long>{
