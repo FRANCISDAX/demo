@@ -56,7 +56,17 @@
                                     <span th:if="${producto.stock > 0}" class="badge bg-success">En stock</span>
                                     <span th:if="${producto.stock == 0}" class="badge bg-danger">Agotado</span>
                                 </p>
-                                <a th:href="@{/productos}" class="btn btn-outline-primary w-100">Ver todos</a>
+                                <button class="btn btn-outline-primary w-100"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#productModal"
+                                    th:attr="data-id=${producto.id},
+                                             data-nombre=${producto.nombre},
+                                             data-descripcion=${producto.descripcion},
+                                             data-precio=${producto.precio},
+                                             data-stock=${producto.stock},
+                                             data-img=${#strings.isEmpty(producto.imagenUrl) ? '/images/no-imagen.jpg' : producto.imagenUrl}">
+                                    Ver Detalles
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -69,8 +79,68 @@
 
     </div>
 
+    <!-- Modal Detalle Producto -->
+    <div class="modal fade" id="productModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+        
+        <div class="modal-header">
+            <h5 class="modal-title" id="modalTitle"></h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+
+        <div class="modal-body row g-4">
+            
+            <!-- Imagen -->
+            <div class="col-md-5 text-center">
+            <img id="modalImage" src="" class="img-fluid rounded">
+            </div>
+            
+            <!-- Info -->
+            <div class="col-md-7">
+            <p id="modalDesc" class="text-muted"></p>
+            <p id="modalPrice" class="fs-4 text-primary fw-bold"></p>
+            <p><strong>Stock:</strong> <span id="modalStock"></span> unidades</p>
+
+            <div class="mb-3">
+                <label class="form-label">Cantidad</label>
+                <div class="input-group" style="width: 120px;">
+                <button class="btn btn-outline-secondary" type="button" onclick="changeQty(-1)">-</button>
+                <input type="number" class="form-control text-center" id="qty" value="1" min="1">
+                <button class="btn btn-outline-secondary" type="button" onclick="changeQty(1)">+</button>
+                </div>
+            </div>
+
+            <button class="btn btn-primary w-100">AGREGAR AL CARRITO</button>
+            </div>
+        </div>
+
+        </div>
+    </div>
+    </div>
+
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Cargar datos en el modal al abrir
+    const productModal = document.getElementById('productModal');
+    productModal.addEventListener('show.bs.modal', event => {
+        let button = event.relatedTarget;
+        document.getElementById("modalTitle").innerText = button.getAttribute("data-nombre");
+        document.getElementById("modalDesc").innerText = button.getAttribute("data-descripcion");
+        document.getElementById("modalPrice").innerText = "S/ " + parseFloat(button.getAttribute("data-precio")).toFixed(2);
+        document.getElementById("modalStock").innerText = button.getAttribute("data-stock");
+        document.getElementById("qty").value = 1;
+        document.getElementById("modalImage").src = button.getAttribute("data-img");
+    });
+
+    function changeQty(n) {
+        let qty = document.getElementById("qty");
+        let value = parseInt(qty.value) + n;
+        if (value >= 1) qty.value = value;
+    }
+    </script>
 
 </body>
 </html>

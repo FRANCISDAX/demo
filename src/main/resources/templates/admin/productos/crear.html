@@ -17,7 +17,7 @@
 
         <h2 class="mx-5 my-4">Registrar Nuevo Producto</h2>
 
-        <form th:action="@{/admin/productos/crear}" th:object="${producto}" method="post" class="needs-validation mx-5" novalidate>
+        <form th:action="@{/admin/productos/crear}" th:object="${producto}" method="post" enctype="multipart/form-data" class="needs-validation mx-5" novalidate>
             <div class="mb-3">
                 <label>Nombre</label>
                 <input id="nombre" type="text" th:field="*{nombre}" class="form-control" required>
@@ -55,6 +55,11 @@
                 <div class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
             </div>
 
+            <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input type="file" class="form-control" name="imagen" accept="image/*">
+            </div>
+            
             <div class="form-check mb-3">
                 <input id="activo" type="checkbox" th:field="*{activo}" class="form-check-input">
                 <label for="activo" class="form-check-label">Marcar como producto Activo</label>

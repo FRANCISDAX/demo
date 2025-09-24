@@ -56,6 +56,9 @@ public class Producto {
     @Column(nullable = false)
     private Integer stock;
 
+    @Column(name = "imagen_url", length = 500)
+    private String imagenUrl;
+
     @Builder.Default
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT TRUE")
     private boolean activo = true;

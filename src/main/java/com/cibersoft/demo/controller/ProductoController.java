@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.cibersoft.demo.entity.Producto;
 import com.cibersoft.demo.service.CategoriaService;
+import com.cibersoft.demo.service.CloudinaryService;
 import com.cibersoft.demo.service.ProductoService;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -80,6 +82,9 @@ public class ProductoController {
         @Autowired
         private CategoriaService categoriaService;
 
+        @Autowired
+        private CloudinaryService cloudinaryService;
+
         @GetMapping
         public String listarProductos(Model model) {
              model.addAttribute("productos", productoService.obtenerTodos());
@@ -99,6 +104,7 @@ public class ProductoController {
             @ModelAttribute("producto") Producto producto,
             BindingResult bindingResult,
             RedirectAttributes redirectAttributes,
+            @RequestParam("imagen") MultipartFile imagen,
             Model model) {
 
             if (producto.getCategoria() == null) {
@@ -114,7 +120,17 @@ public class ProductoController {
                 return "admin/productos/crear";
             }
 
-            productoService.guardar(producto);
+            try {
+                if (!imagen.isEmpty()) {
+                    String urlImagen = cloudinaryService.uploadFile(imagen);
+                    System.out.println("📸 Imagen subida a Cloudinary: " + urlImagen);
+                    producto.setImagenUrl(urlImagen);
+                }
+                productoService.guardar(producto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            
             model.addAttribute("exito", "✅ Producto registrado correctamente.");
             redirectAttributes.addFlashAttribute("successMessage", "Producto registrado correctamente");
             return "redirect:/admin/productos";
@@ -131,10 +147,20 @@ public class ProductoController {
         @PostMapping("/actualizar/{id}")
         public String actualizarProducto(@PathVariable Long id, 
             @Valid @ModelAttribute Producto producto,
-            RedirectAttributes redirectAttributes, 
+            RedirectAttributes redirectAttributes,
+            @RequestParam("imagen") MultipartFile imagen, 
             BindingResult result) {
             if (result.hasErrors()) return "/admin/productos/editar";
-            productoService.guardar(producto);
+            try {
+                if (!imagen.isEmpty()) {
+                    String urlImagen = cloudinaryService.uploadFile(imagen);
+                    System.out.println("📸 Imagen subida a Cloudinary: " + urlImagen);
+                    producto.setImagenUrl(urlImagen);
+                }
+                productoService.guardar(producto);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
             redirectAttributes.addFlashAttribute("successMessage", "Producto actualizado correctamente");
             return "redirect:/admin/productos?actualizado";
         }

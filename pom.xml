@@ -78,7 +78,12 @@
 			<groupId>com.github.ua-parser</groupId>
 			<artifactId>uap-java</artifactId>
 			<version>1.6.1</version>
-		</dependency>	
+		</dependency>
+		<dependency>
+			<groupId>com.cloudinary</groupId>
+			<artifactId>cloudinary-http44</artifactId>
+		<version>1.33.0</version>
+</dependency>	
 	</dependencies>
 	<build>
 		<plugins>

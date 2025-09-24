@@ -12,7 +12,7 @@
     <div class="container mx-auto">
         <h2 class="mx-5 my-4">Editar Producto</h2>
 
-        <form th:action="@{/admin/productos/actualizar/{id}(id=${producto.id})}" th:object="${producto}" method="post" class="mx-5">
+        <form th:action="@{/admin/productos/actualizar/{id}(id=${producto.id})}" th:object="${producto}" method="post" enctype="multipart/form-data" class="mx-5">
             <div class="mb-3">
                 <label for="nombre" class="form-label">Nombre</label>
                 <input id="nombre" type="text" th:field="*{nombre}" class="form-control" required>
@@ -48,6 +48,11 @@
                 <label for="stock" class="form-label">Stock</label>
                 <input id="stock" type="number" th:field="*{stock}" class="form-control" required>
                 <div class="text-danger" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></div>
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Imagen</label>
+                <input type="file" class="form-control" name="imagen" accept="image/*">
             </div>
 
             <div class="form-check mb-3">
