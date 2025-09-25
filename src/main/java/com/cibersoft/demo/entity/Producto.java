@@ -45,6 +45,7 @@ public class Producto {
     @Column(nullable=false, length = 100)
     private String nombre;
 
+    @Size(max = 255, message = "La descripción no debe superar los 255 caracteres")
     private String descripcion;
 
     @NotNull(message = "El precio es obligatorio")
@@ -56,7 +57,7 @@ public class Producto {
     @Column(nullable = false)
     private Integer stock;
 
-    @Column(name = "imagen_url", length = 500)
+    @Column(name = "imagen_url", length = 100)
     private String imagenUrl;
 
     @Builder.Default

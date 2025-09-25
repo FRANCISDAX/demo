@@ -152,10 +152,14 @@ public class ProductoController {
             BindingResult result) {
             if (result.hasErrors()) return "/admin/productos/editar";
             try {
+                Producto productoExistente = productoService.obtenerPorId(id)
+                    .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con id: " + id));
+
                 if (!imagen.isEmpty()) {
                     String urlImagen = cloudinaryService.uploadFile(imagen);
-                    System.out.println("📸 Imagen subida a Cloudinary: " + urlImagen);
                     producto.setImagenUrl(urlImagen);
+                } else {
+                    producto.setImagenUrl(productoExistente.getImagenUrl());
                 }
                 productoService.guardar(producto);
             } catch (Exception e) {
