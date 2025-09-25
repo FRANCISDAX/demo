@@ -52,7 +52,7 @@ public class CategoriaController {
 
         try {
             categoriaService.guardar(categoria);
-            model.addAttribute("exito", "✅ Categoría registrado correctamente.");
+            model.addAttribute("exito", "Categoría registrado correctamente.");
             redirectAttributes.addFlashAttribute("successMessage", "Categoría registrado correctamente");
             return "redirect:/admin/categorias";
         } catch (DataIntegrityViolationException e) {
@@ -77,6 +77,25 @@ public class CategoriaController {
                 .orElseThrow(() -> new IllegalArgumentException("Categoría no encontrada: " + id));
         model.addAttribute("categoria", categoria);
         return "admin/categorias/editar";
+    }
+
+    @PostMapping("/editar/{id}")
+    public String actualizarCategoria(@PathVariable Long id,
+                                    @Valid @ModelAttribute("categoria") Categoria categoria,
+                                    BindingResult bindingResult,
+                                    RedirectAttributes redirectAttributes,
+                                    Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "admin/categorias/editar";
+        }
+
+        categoria.setId(id);
+        categoriaService.guardar(categoria);
+
+        redirectAttributes.addFlashAttribute("successMessage", "Categoría actualizada correctamente.");
+        return "redirect:/admin/categorias";
+        
     }
 
     @GetMapping("/eliminar/{id}")

@@ -21,6 +21,10 @@ private final CategoriaRepository categoriaRepository;
         return categoriaRepository.findAll();
     }
 
+    public List<Categoria> listarCategoriasActivas() {
+        return categoriaRepository.findByActivo(true);
+    }
+
     public Optional<Categoria> buscarPorId(Long id) {
         return categoriaRepository.findById(id);
     }

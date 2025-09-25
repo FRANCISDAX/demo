@@ -95,7 +95,7 @@ public class ProductoController {
         public String mostrarFormularioCrear(Model model) {
             Producto producto = new Producto();
             model.addAttribute("producto", producto);
-            model.addAttribute("categorias", categoriaService.listarTodas());
+            model.addAttribute("categorias", categoriaService.listarCategoriasActivas());
             return "admin/productos/crear";
         }
 
@@ -116,7 +116,7 @@ public class ProductoController {
             }
 
             if (bindingResult.hasErrors()) {
-                model.addAttribute("categorias", categoriaService.listarTodas());
+                model.addAttribute("categorias", categoriaService.listarCategoriasActivas());
                 return "admin/productos/crear";
             }
 

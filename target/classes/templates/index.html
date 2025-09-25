@@ -46,7 +46,7 @@
                             <div class="card-body">
                                 <h5 class="card-title fw-bold" th:text="${producto.nombre}">Nombre del producto</h5>
                                 <h6 class="card-subtitle mb-2 text-muted" th:text="${producto.categoria.nombre}">Categoría</h6>
-                                <p class="card-text" th:text="${#strings.abbreviate(producto.descripcion, 100)}">
+                                <p class="card-text" th:text="${#strings.abbreviate(producto.descripcion, 50)}">
                                     Descripción breve del producto.
                                 </p>
                                 <p class="card-text">

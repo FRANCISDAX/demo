@@ -36,6 +36,8 @@
             <div class="container">
                 <h2 class="mb-4">Productos</h2>
 
+                <p th:text="'Total : ' + ${productos.size()} + ' productos'"></p>
+
                 <div th:if="${productos.empty}" class="alert alert-info">
                     No hay productos disponibles en este momento.
                 </div>
@@ -46,7 +48,7 @@
                             <div class="card-body">
                                 <h5 class="card-title fw-bold" th:text="${producto.nombre}">Nombre del producto</h5>
                                 <h6 class="card-subtitle mb-2 text-muted" th:text="${producto.categoria.nombre}">Categoría</h6>
-                                <p class="card-text" th:text="${#strings.abbreviate(producto.descripcion, 100)}">
+                                <p class="card-text" th:text="${#strings.abbreviate(producto.descripcion, 50)}">
                                     Descripción breve del producto.
                                 </p>
                                 <p class="card-text">
@@ -65,7 +67,7 @@
                                              data-precio=${producto.precio},
                                              data-stock=${producto.stock},
                                              data-img=${#strings.isEmpty(producto.imagenUrl) ? '/images/no-imagen.jpg' : producto.imagenUrl}">
-                                    Ver Detalles
+                                    VER PRODUCTO
                                 </button>
                             </div>
                         </div>
