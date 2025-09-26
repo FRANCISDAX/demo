@@ -145,12 +145,14 @@ public class ProductoController {
         }
 
         @PostMapping("/actualizar/{id}")
-        public String actualizarProducto(@PathVariable Long id, 
+        public String actualizarProducto(@PathVariable Long id,
             @Valid @ModelAttribute Producto producto,
+            BindingResult result, 
             RedirectAttributes redirectAttributes,
-            @RequestParam("imagen") MultipartFile imagen, 
-            BindingResult result) {
+            @RequestParam("imagen") MultipartFile imagen) {
+
             if (result.hasErrors()) return "/admin/productos/editar";
+
             try {
                 Producto productoExistente = productoService.obtenerPorId(id)
                     .orElseThrow(() -> new IllegalArgumentException("Producto no encontrado con id: " + id));

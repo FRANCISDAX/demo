@@ -7,25 +7,38 @@
         <a class="btn btn-warning" th:href="@{/admin/usuarios/nuevo}">Nuevo Usuario</a>
     </div>
 
-    <table class="table table-hover">
-        <thead class="table-primary">
+    <table class="table table-hover align-middle shadow-sm rounded">
+        <thead class="table-dark">
             <tr>
-                <th>ID</th>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Rol</th>
-                <th>Acciones</th>
+                <th scope="col">ID</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Email</th>
+                <th scope="col">Rol</th>
+                <th scope="col" class="text-center">Acciones</th>
             </tr>
         </thead>
-        <tbody style="background-color: #f8f9fa;">
+        <tbody class="table-light">
             <tr th:each="usuario : ${usuarios}">
                 <td th:text="${usuario.id}"></td>
                 <td th:text="${usuario.nombre}"></td>
                 <td th:text="${usuario.email}"></td>
                 <td th:text="${usuario.rol}"></td>
-                <td>
-                    <a class="btn btn-primary btn-sm" style="width: 70px;" th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}">Editar</a>
-                    <a th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" class="btn btn-sm btn-danger" style="width: 70px;" onclick="return confirm('¿Seguro de eliminar este producto?')">Eliminar</a>
+                <td class="text-center">
+                    <div class="btn-group" role="group">
+                        <a class="btn btn-outline-primary btn-sm" 
+                            style="width: 70px;" 
+                            th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}">
+                            <i class="bi bi-pencil-square"></i>
+                             Editar
+                        </a>
+                        <a th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" 
+                            class="btn btn-sm btn-outline-danger" 
+                            style="width: 70px;" 
+                            onclick="return confirm('¿Seguro de eliminar este producto?')">
+                            <i class="bi bi-trash"></i>
+                             Eliminar
+                        </a>
+                    </div>
                 </td>
             </tr>
         </tbody>
