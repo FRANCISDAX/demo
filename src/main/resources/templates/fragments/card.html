@@ -1,0 +1,104 @@
+<!-- 🟦 Card estándar (vertical) -->
+<div th:fragment="card(producto)" 
+    class="bg-white rounded-lg shadow-md p-6 flex flex-col justify-between hover:shadow-lg transition">
+
+    <div>
+        <!-- Nombre -->
+        <h5 class="text-lg font-bold text-gray-800 mb-1 truncate"
+            th:text="${producto.nombre}">Nombre del producto</h5>
+
+        <!-- Categoría -->
+        <h6 class="text-sm text-gray-500 mb-2"
+            th:text="${producto.categoria.nombre}">Categoría</h6>
+
+        <!-- Descripción -->
+        <p class="text-gray-600 mb-3"
+           th:text="${#strings.abbreviate(producto.descripcion, 50)}">
+           Descripción breve del producto
+        </p>
+
+        <!-- Precio -->
+        <p class="text-gray-900 font-bold mb-2"
+           th:text="${'S/ ' + #numbers.formatDecimal(producto.precio, 1, 2)}">
+           Precio
+        </p>
+
+        <!-- Stock -->
+        <p>
+            <span th:if="${producto.stock > 0}" 
+                  class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                  En stock
+            </span>
+            <span th:if="${producto.stock == 0}" 
+                  class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded">
+                  Agotado
+            </span>
+        </p>
+
+    </div>
+
+    <!-- Botón -->
+    <button class="mt-4 w-full bg-transparent border border-indigo-500 text-indigo-500 hover:bg-indigo-500 hover:text-white transition px-4 py-2 rounded"
+    data-modal-target="productModal"
+    data-id="" th:attr="data-id=${producto.id},
+                        data-nombre=${producto.nombre},
+                        data-descripcion=${producto.descripcion},
+                        data-precio=${producto.precio},
+                        data-stock=${producto.stock},
+                        data-img=${#strings.isEmpty(producto.imagenUrl) ? '/images/no-imagen.jpg' : producto.imagenUrl}">
+        VER PRODUCTO
+    </button>
+
+</div>
+
+
+<!-- 🟩 Card horizontal (con imagen al lado) -->
+<div th:fragment="cardHorizontal(producto)" 
+     class="bg-white rounded-lg shadow-md flex hover:shadow-lg transition p-3">
+
+    <!-- Imagen -->
+    <div class="flex-shrink-0 mr-0">
+        <img th:src="@{${producto.imagenUrl}}" alt="Imagen del producto"
+             class="w-28 h-28 object-cover rounded"/>
+    </div>
+
+    <!-- Contenido -->
+    <div class="p-4 flex flex-col justify-between w-2/3">
+        <div>
+            <h5 class="text-md font-bold text-gray-800 mb-1 truncate"
+                th:text="${producto?.nombre}">Nombre del producto</h5>
+
+            <h6 class="text-sm text-gray-500 mb-2"
+                th:text="${producto?.categoria?.nombre}">Categoría</h6>
+
+            <p class="text-gray-600 mb-3"
+               th:text="${#strings.abbreviate(producto?.descripcion, 40)}">
+               Descripción breve
+            </p>
+
+            <p class="text-gray-900 font-bold mb-2"
+               th:text="${'S/ ' + #numbers.formatDecimal(producto?.precio, 1, 2)}">
+               Precio
+            </p>
+        </div>
+
+        <div class="flex justify-between items-center mt-2">
+            <span th:if="${producto?.stock > 0}" 
+                  class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                  En stock
+            </span>
+            <span th:if="${producto?.stock == 0}" 
+                  class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded">
+                  Agotado
+            </span>
+
+            <a th:href="@{/productos}" 
+               class="bg-transparent border border-blue-600 text-blue-600 px-3 py-1 rounded 
+                      hover:bg-blue-600 hover:text-white transition text-sm">
+                + Productos
+            </a>
+        </div>
+
+    </div>
+    
+</div>

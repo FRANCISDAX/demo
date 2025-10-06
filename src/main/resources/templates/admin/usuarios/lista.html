@@ -1,46 +1,53 @@
 <div th:fragment="content">
 
+    <!-- Notificaciones -->
     <div th:replace="~{fragments/notify :: notificaciones}"></div>
 
-    <div class="d-flex justify-content-between align-items-center py-4">
-        <h2>Usuarios</h2>
-        <a class="btn btn-warning" th:href="@{/admin/usuarios/nuevo}">Nuevo Usuario</a>
+    <!-- Encabezado -->
+    <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
+        <h2 class="text-2xl font-bold text-gray-800">Usuarios</h2>
+        <a th:href="@{/admin/usuarios/nuevo}"
+           class="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-medium rounded-lg shadow transition focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2">
+            Nuevo Usuario
+        </a>
     </div>
 
-    <table class="table table-hover align-middle shadow-sm rounded">
-        <thead class="table-dark">
-            <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Email</th>
-                <th scope="col">Rol</th>
-                <th scope="col" class="text-center">Acciones</th>
-            </tr>
-        </thead>
-        <tbody class="table-light">
-            <tr th:each="usuario : ${usuarios}">
-                <td th:text="${usuario.id}"></td>
-                <td th:text="${usuario.nombre}"></td>
-                <td th:text="${usuario.email}"></td>
-                <td th:text="${usuario.rol}"></td>
-                <td class="text-center">
-                    <div class="btn-group" role="group">
-                        <a class="btn btn-outline-primary btn-sm" 
-                            style="width: 70px;" 
-                            th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}">
-                            <i class="bi bi-pencil-square"></i>
-                             Editar
-                        </a>
-                        <a th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}" 
-                            class="btn btn-sm btn-outline-danger" 
-                            style="width: 70px;" 
-                            onclick="return confirm('¿Seguro de eliminar este producto?')">
-                            <i class="bi bi-trash"></i>
-                             Eliminar
-                        </a>
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <!-- Tabla de usuarios -->
+    <div class="overflow-hidden rounded-lg shadow-sm border border-gray-200">
+        <table class="min-w-full bg-white">
+            <thead class="bg-gray-800 text-white">
+                <tr>
+                    <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">ID</th>
+                    <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nombre</th>
+                    <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Email</th>
+                    <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Rol</th>
+                    <th scope="col" class="px-6 py-3 text-center text-sm font-medium uppercase tracking-wider">Acciones</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                <tr th:each="usuario : ${usuarios}" class="hover:bg-gray-50">
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-800" th:text="${usuario.id}">1</td>
+                    <td class="px-6 py-4 text-gray-800 font-medium" th:text="${usuario.nombre}">Nombre</td>
+                    <td class="px-6 py-4 text-gray-600" th:text="${usuario.email}">email@example.com</td>
+                    <td class="px-6 py-4 text-gray-700" th:text="${usuario.rol}">Rol</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-center">
+                        <div class="flex justify-center gap-2">
+                            <a th:href="@{/admin/usuarios/editar/{id}(id=${usuario.id})}"
+                               class="inline-flex items-center justify-center w-28 px-3 py-1.5 text-sm font-medium text-blue-600 bg-white border border-blue-600 rounded hover:bg-blue-600 hover:text-white transition"
+                               title="Editar">
+                                <i class="bi bi-pencil-square mr-1"></i> Editar
+                            </a>
+                            <a th:href="@{/admin/usuarios/eliminar/{id}(id=${usuario.id})}"
+                               class="inline-flex items-center justify-center w-28 px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white transition"
+                               title="Eliminar"
+                               onclick="return confirm('¿Seguro de eliminar este usuario?')">
+                                <i class="bi bi-trash mr-1"></i> Eliminar
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
 </div>

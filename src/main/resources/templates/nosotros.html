@@ -1,120 +1,93 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <title>Nosotros - MiTienda</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
-    <style>
-        /* Estilos personalizados */
-        .section-title {
-            margin-bottom: 2rem;
-            font-weight: 700;
-            color: #0d6efd;
-        }
-        .card-team {
-            transition: transform 0.3s;
-        }
-        .card-team:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-        }
-        .contact-info i {
-            color: #0d6efd;
-            margin-right: 0.5rem;
-        }
-        .divider {
-            width: 60px;
-            height: 4px;
-            background-color: #0d6efd;
-            margin: 0.5rem 0 2rem 0;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Nosotros - MiTienda</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+  <link rel="icon" type="image/x-icon" th:href="@{/images/favicon.ico}">
 </head>
-<body>
-    
-    <div th:replace="~{fragments/header :: header('Nosotros')}"></div>
+<body class="bg-gray-50 text-gray-800">
+  
+  <!-- Header -->
+  <div th:replace="~{fragments/header :: header('Nosotros')}"></div>
 
-    <div class="container my-5">
+  <div class="max-w-6xl mx-auto px-4 py-10">
 
-        <!-- Título -->
-        <div class="text-center mb-5">
-            <h1 class="section-title">Acerca de Nosotros</h1>
-            <div class="divider mx-auto"></div>
-            <p class="text-muted">Conoce nuestra misión, visión y los valores que nos hacen únicos.</p>
-        </div>
-
-        <!-- Misión y Visión -->
-        <div class="row g-4 mb-5">
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded shadow-sm h-100">
-                    <h3 class="mb-3"><i class="bi bi-bullseye"></i> Nuestra Misión</h3>
-                    <p>Proveer los mejores productos al mejor precio, con un servicio excepcional y entrega rápida.</p>
-                    <h3 class="mt-4 mb-3"><i class="bi bi-eye"></i> Nuestra Visión</h3>
-                    <p>Ser la tienda online preferida por los clientes gracias a nuestra amplia variedad de productos y atención personalizada.</p>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="p-4 bg-light rounded shadow-sm h-100">
-                    <h3 class="mb-3"><i class="bi bi-heart-fill"></i> Valores</h3>
-                    <ul>
-                        <li>Calidad en todos nuestros productos</li>
-                        <li>Servicio al cliente excepcional</li>
-                        <li>Innovación constante</li>
-                        <li>Responsabilidad social y ambiental</li>
-                    </ul>
-                    <h3 class="mt-4 mb-3"><i class="bi bi-telephone-fill"></i> Contacto</h3>
-                    <p class="contact-info"><i class="bi bi-envelope-fill"></i> 12440052@elitec.edu.pe</p>
-                    <p class="contact-info"><i class="bi bi-telephone-fill"></i> +51 925 066 866</p>
-                    <p class="contact-info"><i class="bi bi-geo-alt-fill"></i> Calle Principal 123, Ciudad, País</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Equipo -->
-        <div class="text-center mb-4">
-            <h2 class="section-title">Nuestro Equipo</h2>
-            <div class="divider mx-auto"></div>
-        </div>
-
-        <div class="row g-4">
-            <div class="col-md-4">
-                <div class="card card-team text-center border-0 shadow-sm">
-                    <img th:src="@{/images/johan.png}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px;" alt="Johan Reyna">
-                    <div class="card-body">
-                        <h5 class="card-title">Johan Reyna Avalos</h5>
-                        <p class="card-text text-muted">CEO y Fundador</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-team text-center border-0 shadow-sm">
-                    <img src="https://via.placeholder.com/150" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px;" alt="Genesis Flores">
-                    <div class="card-body">
-                        <h5 class="card-title">Genesis Flores Sandy</h5>
-                        <p class="card-text text-muted">Directora de Marketing</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card card-team text-center border-0 shadow-sm">
-                    <img th:src="@{/images/jorge.png}" class="card-img-top rounded-circle mx-auto mt-3" style="width: 100px; height: 100px;" alt="Jorge Reyna">
-                    <div class="card-body">
-                        <h5 class="card-title">Jorge Reyna Sandy</h5>
-                        <p class="card-text text-muted">Jefe de Operaciones</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-
+    <!-- Título -->
+    <div class="text-center mb-10">
+      <h1 class="text-3xl md:text-4xl font-bold text-blue-600">Acerca de Nosotros</h1>
+      <div class="w-16 h-1 bg-blue-600 mx-auto my-4"></div>
+      <p class="text-gray-600">Conoce nuestra misión, visión y los valores que nos hacen únicos.</p>
     </div>
 
-    <div th:replace="~{fragments/footer :: footer}"></div>
+    <!-- Misión y Visión -->
+    <div class="grid md:grid-cols-2 gap-6 mb-12">
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+          <i class="bi bi-bullseye text-blue-600"></i> Nuestra Misión
+        </h3>
+        <p>Proveer los mejores productos al mejor precio, con un servicio excepcional y entrega rápida.</p>
+        
+        <h3 class="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+          <i class="bi bi-eye text-blue-600"></i> Nuestra Visión
+        </h3>
+        <p>Ser la tienda online preferida por los clientes gracias a nuestra amplia variedad de productos y atención personalizada.</p>
+      </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"></script>
+      <div class="bg-white p-6 rounded-lg shadow hover:shadow-lg transition">
+        <h3 class="text-xl font-semibold mb-3 flex items-center gap-2">
+          <i class="bi bi-heart-fill text-blue-600"></i> Valores
+        </h3>
+        <ul class="list-disc pl-5 text-gray-700 space-y-1">
+          <li>Calidad en todos nuestros productos</li>
+          <li>Servicio al cliente excepcional</li>
+          <li>Innovación constante</li>
+          <li>Responsabilidad social y ambiental</li>
+        </ul>
+
+        <h3 class="text-xl font-semibold mt-6 mb-3 flex items-center gap-2">
+          <i class="bi bi-telephone-fill text-blue-600"></i> Contacto
+        </h3>
+        <p class="flex items-center text-gray-600"><i class="bi bi-envelope-fill text-blue-600 mr-2"></i> 12440052@elitec.edu.pe</p>
+        <p class="flex items-center text-gray-600"><i class="bi bi-telephone-fill text-blue-600 mr-2"></i> +51 925 066 866</p>
+        <p class="flex items-center text-gray-600"><i class="bi bi-geo-alt-fill text-blue-600 mr-2"></i> Calle Principal 123, Ciudad, País</p>
+      </div>
+    </div>
+
+    <!-- Equipo -->
+    <div class="text-center mb-8">
+      <h2 class="text-2xl md:text-3xl font-bold text-blue-600">Nuestro Equipo</h2>
+      <div class="w-16 h-1 bg-blue-600 mx-auto my-4"></div>
+    </div>
+
+    <div class="grid sm:grid-cols-2 md:grid-cols-3 gap-6">
+      <!-- Johan -->
+      <div class="bg-white rounded-lg shadow hover:shadow-lg transition text-center p-6">
+        <img th:src="@{/images/johan.png}" alt="Johan Reyna" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+        <h5 class="font-semibold text-lg">Johan Reyna Avalos</h5>
+        <p class="text-gray-500">CEO y Fundador</p>
+      </div>
+
+      <!-- Genesis -->
+      <div class="bg-white rounded-lg shadow hover:shadow-lg transition text-center p-6">
+        <img src="https://via.placeholder.com/150" alt="Genesis Flores" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+        <h5 class="font-semibold text-lg">Genesis Flores Sandy</h5>
+        <p class="text-gray-500">Directora de Marketing</p>
+      </div>
+
+      <!-- Jorge -->
+      <div class="bg-white rounded-lg shadow hover:shadow-lg transition text-center p-6">
+        <img th:src="@{/images/jorge.png}" alt="Jorge Reyna" class="w-24 h-24 rounded-full mx-auto mb-4 object-cover">
+        <h5 class="font-semibold text-lg">Jorge Reyna Sandy</h5>
+        <p class="text-gray-500">Jefe de Operaciones</p>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Footer -->
+  <div th:replace="~{fragments/footer :: footer}"></div>
 
 </body>
 </html>
