@@ -19,7 +19,7 @@
 
         <!-- Precio -->
         <p class="text-gray-900 font-bold mb-2"
-           th:text="${'S/ ' + #numbers.formatDecimal(producto.precio, 1, 2)}">
+           th:text="${'S/ ' + #numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}">
            Precio
         </p>
 
@@ -27,23 +27,29 @@
         <div class="flex flex-wrap items-center gap-2">
             <!-- Stock -->
             <span th:if="${producto.stock > 0}" 
-                class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-emerald-100 text-emerald-700 rounded">
                 En stock
             </span>
             <span th:if="${producto.stock == 0}" 
-                class="px-2 py-1 text-xs font-semibold text-red-800 bg-red-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-rose-100 text-rose-700 rounded">
                 Agotado
+            </span>
+
+            <!-- Destacado -->
+            <span th:if="${producto.destacado}"
+                class="px-2 py-1 text-xs font-semibold bg-amber-100 text-amber-700 rounded">
+                DESTACADO
             </span>
 
             <!-- En Oferta -->
             <span th:if="${producto.oferta}"
-                class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-teal-100 text-teal-700 rounded">
                 EN OFERTA
             </span>
 
             <!-- Producto Nuevo -->
             <span th:if="${producto.nuevo}"
-                class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded">
                 NUEVO
             </span>
         </div>
@@ -78,11 +84,11 @@
     <!-- Contenido -->
     <div class="w-2/3 p-4 md:p-4">
 
-        <h1 class="text-xl font-bold text-gray-800" th:text="${producto?.nombre}">
+        <h1 class="text-md font-bold text-gray-800" th:text="${#strings.abbreviate(producto?.nombre, 40)}">
             Nombre del Producto
         </h1>
 
-        <p class="mt-2 text-sm text-gray-600" th:text="${#strings.abbreviate(producto?.descripcion, 55)}">
+        <p class="mt-2 text-sm text-gray-600" th:text="${#strings.abbreviate(producto?.descripcion, 48)}">
             Descripción breve
         </p>
 
@@ -91,17 +97,17 @@
                 👉
             </span>
             <span th:if="${producto.oferta}"
-                class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-teal-100 text-teal-700 rounded">
                 EN OFERTA
             </span>
             <span th:if="${producto.nuevo}"
-                class="px-2 py-1 text-xs font-semibold text-green-800 bg-green-100 rounded">
+                class="px-2 py-1 text-xs font-semibold bg-indigo-100 text-indigo-700 rounded">
                 NUEVO
             </span>
         </div>
 
         <div class="flex justify-between mt-3 item-center">
-            <h1 class="text-lg font-bold text-gray-700 md:text-xl" th:text="${'S/ ' + #numbers.formatDecimal(producto?.precio, 1, 2)}">
+            <h1 class="text-xl font-bold text-gray-700 md:text-lg" th:text="${'S/ ' + #numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}">
                 Precio
             </h1>
             <a th:href="@{/productos}">

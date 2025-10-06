@@ -106,29 +106,29 @@
     <!-- JS Modal -->
     <script>
         const modal = document.getElementById('productModal');
-        const filtroForm = document.getElementById('filtroForm');
 
-        // Modal: Abrir.
-        document.querySelectorAll('[data-modal-target]').forEach(btn => {
-            btn.addEventListener('click', () => {
-                document.getElementById("modalTitle").innerText = btn.getAttribute("data-nombre");
-                document.getElementById("modalDesc").innerText = btn.getAttribute("data-descripcion");
-                document.getElementById("modalPrice").innerText = "S/ " + parseFloat(btn.getAttribute("data-precio")).toFixed(2);
-                document.getElementById("modalStock").innerText = btn.getAttribute("data-stock");
-                document.getElementById("qty").value = 1;
-                document.getElementById("modalImage").src = btn.getAttribute("data-img");
-                modal.classList.remove("hidden");
-                modal.classList.add("flex");
+        function registrarEventosModal() {
+            document.querySelectorAll('[data-modal-target]').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    document.getElementById("modalTitle").innerText = btn.getAttribute("data-nombre");
+                    document.getElementById("modalDesc").innerText = btn.getAttribute("data-descripcion");
+                    const precio = parseFloat(btn.getAttribute("data-precio")) || 0;
+                    document.getElementById("modalPrice").innerText = 
+                        new Intl.NumberFormat('es-PE', { style: 'currency', currency: 'PEN', minimumFractionDigits: 2 }).format(precio);
+                    document.getElementById("modalStock").innerText = btn.getAttribute("data-stock");
+                    document.getElementById("qty").value = 1;
+                    document.getElementById("modalImage").src = btn.getAttribute("data-img");
+                    modal.classList.remove("hidden");
+                    modal.classList.add("flex");
+                });
             });
-        });
+        }
 
-        // Modal: Cerrar.
         function closeModal() {
             modal.classList.add("hidden");
             modal.classList.remove("flex");
         }
 
-        // Cantidad
         function changeQty(n) {
             let qty = document.getElementById("qty");
             let value = parseInt(qty.value) + n;
@@ -146,7 +146,7 @@
 
                     try {
                         const response = await fetch('/productos/buscar?' + query, {
-                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                            headers: { 'X-Requested-With': 'XMLHttpRequest' }
                         });
 
                         const html = await response.text();
@@ -157,15 +157,15 @@
                         spinner.classList.add('hidden');
                     }
 
-                    // Volver a registrar eventos tras recargar fragmento.
+                    // 🔹 Volver a registrar eventos tras recargar fragmento.
                     registrarEventosFiltro();
-
+                    registrarEventosModal();
                 });
             });
         }
 
-        // Ejecutar al cargar
         registrarEventosFiltro();
+        registrarEventosModal();
 
     </script>
 

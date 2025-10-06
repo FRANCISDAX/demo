@@ -1,6 +1,6 @@
 <div th:fragment="lista">
 
-    <p th:text="'Total : ' + ${productos.size()} + ' productos'" class="mb-4 text-gray-600"></p>
+    <p th:text="'Total : ' + ${productos.size()} + ' producto(s)'" class="mb-4 text-gray-600"></p>
 
     <form th:action="@{/productos/buscar}" 
         method="get" 
