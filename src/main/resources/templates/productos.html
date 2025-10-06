@@ -2,127 +2,172 @@
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-  <meta charset="UTF-8">
-  <title>Productos - MiTienda</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
-  <!-- Favicon -->
-  <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <meta charset="UTF-8">
+    <title>Productos - MiTienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+            .animate-fadeIn {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
 </head>
 <body class="bg-gray-100 text-gray-800">
 
-  <div class="min-h-screen flex flex-col">
+    <div class="min-h-screen flex flex-col">
 
-    <!-- Header -->
-    <div th:replace="~{fragments/header :: header('Inicio')}"></div>
+        <!-- Header -->
+        <div th:replace="~{fragments/header :: header('Inicio')}"></div>
 
-    <main class="flex-grow">
+        <main class="flex-grow">
 
-      <!-- Mensajes de sesión -->
-      <div th:if="${param.expired}" class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 rounded m-4">
-        ⏳ Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión.
-      </div>
-
-      <div th:if="${param.concurrent}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded m-4">
-        ⚠️ Tu sesión fue cerrada porque iniciaste sesión en otro dispositivo.
-        <b th:text="${param.device}">Otro Navegador</b>
-        (IP: <span th:text="${param.ip}">0.0.0.0</span>).
-      </div>
-
-      <!-- Hero -->
-      <div th:replace="~{fragments/hero :: hero}"></div>
-
-      <!-- Productos -->
-      <div class="max-w-6xl mx-auto px-4 mt-6">
-        <h2 class="text-2xl font-bold mb-4">Productos</h2>
-
-        <p th:text="'Total : ' + ${productos.size()} + ' productos'" class="mb-4 text-gray-600"></p>
-
-        <div th:if="${productos.empty}" class="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-3 rounded">
-          No hay productos disponibles en este momento.
-        </div>
-
-        <div th:unless="${productos.empty}" 
-          class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-
-          <div th:each="producto : ${productos}">
-            <div th:replace="~{fragments/card :: card(producto=${producto})}"></div>
-          </div>
-        </div>
-      </div>
-    </main>
-
-    <!-- Footer -->
-    <div th:replace="~{fragments/footer :: footer}"></div>
-  </div>
-
-  <!-- Modal Detalle Producto -->
-  <div id="productModal" class="fixed inset-0 hidden bg-black bg-opacity-50 items-center justify-center z-50">
-    <div class="bg-white rounded-lg max-w-4xl w-full mx-4 shadow-lg">
-      <div class="flex justify-between items-center border-b px-6 py-3">
-        <h5 id="modalTitle" class="text-xl font-bold"></h5>
-        <button type="button" class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
-          <i class="bi bi-x-lg"></i>
-        </button>
-      </div>
-
-      <div class="p-6 grid gap-6 md:grid-cols-2">
-        <!-- Imagen -->
-        <div class="flex justify-center items-center">
-          <img id="modalImage" src="" class="rounded max-h-80 object-contain">
-        </div>
-
-        <!-- Info -->
-        <div>
-          <p id="modalDesc" class="text-gray-600 mb-3"></p>
-          <p id="modalPrice" class="text-2xl font-bold text-indigo-600 mb-3"></p>
-          <p><strong>Stock:</strong> <span id="modalStock"></span> unidades</p>
-
-          <div class="mt-4">
-            <label class="block text-sm font-medium mb-1">Cantidad</label>
-            <div class="flex border rounded w-32 overflow-hidden">
-              <button class="px-3 py-1 text-gray-600 hover:bg-gray-100" type="button" onclick="changeQty(-1)">-</button>
-              <input type="number" class="w-full text-center border-l border-r" id="qty" value="1" min="1">
-              <button class="px-3 py-1 text-gray-600 hover:bg-gray-100" type="button" onclick="changeQty(1)">+</button>
+            <!-- Mensajes de sesión -->
+            <div th:if="${param.expired}" class="bg-yellow-100 border border-yellow-300 text-yellow-800 px-4 py-3 rounded m-4">
+                ⏳ Tu sesión ha expirado por inactividad. Por favor, vuelve a iniciar sesión.
             </div>
-          </div>
 
-          <button class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
-            AGREGAR AL CARRITO
-          </button>
-        </div>
-      </div>
+            <div th:if="${param.concurrent}" class="bg-red-100 border border-red-300 text-red-800 px-4 py-3 rounded m-4">
+                ⚠️ Tu sesión fue cerrada porque iniciaste sesión en otro dispositivo.
+                <b th:text="${param.device}">Otro Navegador</b>
+                (IP: <span th:text="${param.ip}">0.0.0.0</span>).
+            </div>
+
+            <!-- Hero -->
+            <div th:replace="~{fragments/hero :: hero}"></div>
+
+            <!-- Productos -->
+            <div class="max-w-6xl mx-auto px-4 mt-6">
+                <h2 class="text-2xl font-bold mb-4">Productos</h2>
+
+                <!-- Contenedor donde se actualizarán los productos -->
+                <div id="productosContainer">
+                    
+                    <!-- Lista Filtrada -->
+                    <div th:replace="~{fragments/lista :: lista}"></div>
+
+                </div>
+
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <div th:replace="~{fragments/footer :: footer}"></div>
+
     </div>
-  </div>
 
-  <!-- JS Modal -->
-  <script>
-    const modal = document.getElementById('productModal');
+    <!-- Modal Detalle Producto -->
+    <div id="productModal" class="fixed inset-0 hidden bg-black bg-opacity-50 items-center justify-center z-50">
+        <div class="bg-white rounded-lg max-w-4xl w-full mx-4 shadow-lg">
+            <div class="flex justify-between items-center border-b px-6 py-3">
+                <h5 id="modalTitle" class="text-xl font-bold"></h5>
+                <button type="button" class="text-gray-500 hover:text-gray-700" onclick="closeModal()">
+                    <i class="bi bi-x-lg"></i>
+                </button>
+            </div>
 
-    document.querySelectorAll('[data-modal-target]').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.getElementById("modalTitle").innerText = btn.getAttribute("data-nombre");
-        document.getElementById("modalDesc").innerText = btn.getAttribute("data-descripcion");
-        document.getElementById("modalPrice").innerText = "S/ " + parseFloat(btn.getAttribute("data-precio")).toFixed(2);
-        document.getElementById("modalStock").innerText = btn.getAttribute("data-stock");
-        document.getElementById("qty").value = 1;
-        document.getElementById("modalImage").src = btn.getAttribute("data-img");
-        modal.classList.remove("hidden");
-        modal.classList.add("flex");
-      });
-    });
+            <div class="p-6 grid gap-6 md:grid-cols-2">
+                <!-- Imágen -->
+                <div class="flex justify-center items-center">
+                    <img id="modalImage" src="" class="rounded max-h-80 object-contain">
+                </div>
 
-    function closeModal() {
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
+                <!-- Info -->
+                <div>
+                    <p id="modalDesc" class="text-gray-600 mb-3"></p>
+                    <p id="modalPrice" class="text-2xl font-bold text-indigo-600 mb-3"></p>
+                    <p><strong>Stock:</strong> <span id="modalStock"></span> unidades</p>
 
-    function changeQty(n) {
-      let qty = document.getElementById("qty");
-      let value = parseInt(qty.value) + n;
-      if (value >= 1) qty.value = value;
-    }
-  </script>
+                    <div class="mt-4">
+                        <label class="block text-sm font-medium mb-1">Cantidad</label>
+                        <div class="flex border rounded w-32 overflow-hidden">
+                            <button class="px-3 py-1 text-gray-600 hover:bg-gray-100" type="button" onclick="changeQty(-1)">-</button>
+                            <input type="number" class="w-full text-center border-l border-r" id="qty" value="1" min="1">
+                            <button class="px-3 py-1 text-gray-600 hover:bg-gray-100" type="button" onclick="changeQty(1)">+</button>
+                        </div>
+                    </div>
+
+                    <button class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                        AGREGAR AL CARRITO
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- JS Modal -->
+    <script>
+        const modal = document.getElementById('productModal');
+        const filtroForm = document.getElementById('filtroForm');
+
+        // Modal: Abrir.
+        document.querySelectorAll('[data-modal-target]').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.getElementById("modalTitle").innerText = btn.getAttribute("data-nombre");
+                document.getElementById("modalDesc").innerText = btn.getAttribute("data-descripcion");
+                document.getElementById("modalPrice").innerText = "S/ " + parseFloat(btn.getAttribute("data-precio")).toFixed(2);
+                document.getElementById("modalStock").innerText = btn.getAttribute("data-stock");
+                document.getElementById("qty").value = 1;
+                document.getElementById("modalImage").src = btn.getAttribute("data-img");
+                modal.classList.remove("hidden");
+                modal.classList.add("flex");
+            });
+        });
+
+        // Modal: Cerrar.
+        function closeModal() {
+            modal.classList.add("hidden");
+            modal.classList.remove("flex");
+        }
+
+        // Cantidad
+        function changeQty(n) {
+            let qty = document.getElementById("qty");
+            let value = parseInt(qty.value) + n;
+            if (value >= 1) qty.value = value;
+        }
+
+        function registrarEventosFiltro() {
+            document.querySelectorAll('.filtro-auto').forEach(chk => {
+                chk.addEventListener('change', async () => {
+                    const filtroForm = document.getElementById('filtroForm');
+                    const formData = new FormData(filtroForm);
+                    const query = new URLSearchParams(formData).toString();
+
+                    spinner.classList.remove('hidden');
+
+                    try {
+                        const response = await fetch('/productos/buscar?' + query, {
+                        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+                        });
+
+                        const html = await response.text();
+                        document.getElementById('productosContainer').innerHTML = html;
+                    } catch (error) {
+                        console.error('Error al filtrar:', error);
+                    } finally {
+                        spinner.classList.add('hidden');
+                    }
+
+                    // Volver a registrar eventos tras recargar fragmento.
+                    registrarEventosFiltro();
+
+                });
+            });
+        }
+
+        // Ejecutar al cargar
+        registrarEventosFiltro();
+
+    </script>
 
 </body>
 </html>

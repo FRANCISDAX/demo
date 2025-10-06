@@ -55,4 +55,17 @@ public class ProductoService {
         return productoRepository.findByNombreContainingAllIgnoreCase(nombre);
     }
 
+    public List<Producto> buscarPorFiltros(String nombre, Boolean oferta, Boolean nuevo, Boolean destacado) {
+        if ((nombre == null || nombre.isBlank()) && oferta == null && nuevo == null && destacado == null) {
+            return productoRepository.findAll();
+        }
+
+        if (oferta == null && nuevo == null && destacado == null) {
+            return productoRepository.findByNombreContainingAllIgnoreCase(nombre);
+        }
+
+        return productoRepository.buscarPorFiltros(nombre, oferta, nuevo, destacado);
+        
+    }
+    
 }

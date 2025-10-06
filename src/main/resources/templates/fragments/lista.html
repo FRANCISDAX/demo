@@ -1,0 +1,67 @@
+<div th:fragment="lista">
+
+    <p th:text="'Total : ' + ${productos.size()} + ' productos'" class="mb-4 text-gray-600"></p>
+
+    <form th:action="@{/productos/buscar}" 
+        method="get" 
+        id="filtroForm"
+        class="flex gap-4 items-center">
+        
+        <p>Filtrar Por : </p>
+        <!-- Checkbox: En oferta -->
+        <label class="flex items-center gap-1 text-sm">
+        <input type="checkbox" name="oferta" th:checked="${param.oferta}" 
+            class="rounded text-blue-600 focus:ring-blue-400 filtro-auto">
+            PRODUCTO EN OFERTA
+        </label>
+
+        <!-- Checkbox: Nuevo -->
+        <label class="flex items-center gap-1 text-sm">
+        <input type="checkbox" name="nuevo" th:checked="${param.nuevo}" 
+            class="rounded text-blue-600 focus:ring-blue-400 filtro-auto">
+            NUEVO PRODUCTO
+        </label>
+
+        <!-- Checkbox: Destacado -->
+        <label class="flex items-center gap-1 text-sm">
+        <input type="checkbox" name="destacado" th:checked="${param.destacado}" 
+            class="rounded text-blue-600 focus:ring-blue-400 filtro-auto">
+            PRODUCTO DESTACADO
+        </label>
+
+    </form>
+
+    <!-- Spinner de carga -->
+    <div id="spinner" class="hidden flex justify-center my-6">
+        <div class="w-6 h-6 bg-blue-500 rounded-full animate-ping"></div>
+    </div>
+
+    <div th:if="${(query != null and !#strings.isEmpty(query)) 
+                or param.oferta != null or param.nuevo != null or param.destacado != null}"
+        class="text-gray-600 mt-4 animate-fadeIn">
+        <p>
+            🔍 Filtrando productos
+            <span th:if="${query != null and !#strings.isEmpty(query)}">
+                por "<span class="font-semibold text-blue-600" th:text="${query}"></span>"
+            </span>
+            <span th:if="${param.oferta != null}"> • Productos en Oferta</span>
+            <span th:if="${param.nuevo != null}"> • Nuevos Productos</span>
+            <span th:if="${param.destacado != null}"> • Productos Destacados</span>
+        </p>
+    </div>
+
+    <div th:if="${productos.empty}" 
+         class="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-3 rounded">
+        No hay productos disponibles en este momento.
+    </div>
+
+    <div th:unless="${productos.empty}" 
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+
+        <div th:each="producto : ${productos}">
+            <div th:replace="~{fragments/card :: card(producto=${producto})}"></div>
+        </div>
+
+    </div>
+
+</div>

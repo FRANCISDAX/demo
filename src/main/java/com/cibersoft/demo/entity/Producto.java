@@ -68,6 +68,14 @@ public class Producto {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
     private boolean destacado = false;
 
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean oferta = false;
+
+    @Builder.Default
+    @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT FALSE")
+    private boolean nuevo = false;
+
     @CreationTimestamp
     @Column(updatable = false)
     private LocalDateTime fechaCreacion;

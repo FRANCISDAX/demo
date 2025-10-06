@@ -60,14 +60,32 @@ public class ProductoController {
     }
 
     @GetMapping("/productos/buscar")
-    public String buscarProductosPublico(@RequestParam("q") String query,
-                                         @RequestParam(value = "destacados", defaultValue = "false") boolean destacados,
-                                         Model model) {
-        List<Producto> resultados;
-        resultados = productoService.buscarPorNombre(query);
-        model.addAttribute("productos", resultados);
+    public String buscarProductos(
+        @RequestParam(required = false, name = "q") String query,
+        @RequestParam(required = false) Boolean oferta,
+        @RequestParam(required = false) Boolean nuevo,
+        @RequestParam(required = false) Boolean destacado,
+        Model model,
+        HttpServletRequest request) {
+
+        List<Producto> productos;
+        if (query != null && !query.trim().isEmpty()) {
+            System.out.println("entro");
+            productos = productoService.buscarPorNombre(query);
+        } else if (oferta != null || nuevo != null || destacado != null) {
+            productos = productoService.buscarPorFiltros(null, oferta, nuevo, destacado);
+        } else {
+            productos = productoService.obtenerTodos();
+        }        
+        model.addAttribute("productos", productos);
         model.addAttribute("query", query);
-        return destacados ? "index" : "productos";
+
+        if ("XMLHttpRequest".equals(request.getHeader("X-Requested-With"))) {
+            return "fragments/lista :: lista";
+        }
+
+        return "productos";
+
     }
 
     // ---------------------- ADMIN ----------------------
