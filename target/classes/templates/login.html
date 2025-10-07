@@ -8,25 +8,22 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
     <style>
+
         /* Animación de entrada suave */
         @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
         to {
             opacity: 1;
             transform: translateY(0);
-        }
+            }
         }
         .fade-in-up {
-        animation: fadeInUp 0.6s ease-out forwards;
+            animation: fadeInUp 0.6s ease-out forwards;
         }
-        /* Fondo con imagen */
-        body {
-            background: url('/images/bg-login.jpg') no-repeat center center fixed;
-            background-size: cover;
-        }
+        
         /* Fix autofill Chrome/Edge/Safari */
         input:-webkit-autofill {
             -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
@@ -39,9 +36,10 @@
             -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
             -webkit-text-fill-color: #000 !important;
         }
+
     </style>
 </head>
-<body class="flex items-center justify-center min-h-screen">
+<body class="flex items-center justify-center min-h-screen bg-white dark:bg-gray-600">
 
     <!-- Caja con transparencia + blur -->
     <div class="w-full max-w-md bg-white/30 backdrop-blur-lg shadow-2xl rounded-2xl p-8 fade-in-up border border-white/40">
@@ -89,13 +87,13 @@
 
             <!-- Botón -->
             <button type="submit" 
-                    class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">
+                class="w-full bg-blue-900 text-white py-2 rounded-lg font-semibold hover:opacity-90 transition">
                 INGRESAR
             </button>
 
             <p class="text-center text-gray-800 text-sm">
                 ¿No tienes cuenta? 
-                <a th:href="@{/registro}" class="text-blue-700 font-medium hover:underline">Regístrate</a>
+                <a th:href="@{/registro}" class="text-white-500 font-medium hover:underline">Regístrate</a>
             </p>
 
         </form>
