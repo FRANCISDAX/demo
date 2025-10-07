@@ -37,11 +37,6 @@
                        th:classappend="${currentUri == '/nosotros'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
                        class="transition">Nosotros</a>
 
-                    <!-- Compras -->
-                    <a th:href="@{/compras}" sec:authorize="hasAnyRole('USER','ADMIN')"
-                       th:classappend="${currentUri == '/compras'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
-                       class="transition">Compras</a>
-
                     <!-- Carrito -->
                     <a th:href="@{/carrito}" sec:authorize="hasRole('USER')"
                        th:classappend="${currentUri == '/carrito'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
@@ -91,16 +86,39 @@
                         </a>
                     </div>
 
-                    <div class="flex items-center space-x-2" sec:authorize="isAuthenticated()">
-                        <span class="text-gray-700">
-                            👋 <span sec:authentication="principal.username"></span>
-                        </span>
-                        <form th:action="@{/logout}" method="post">
-                            <button type="submit" 
-                                    class="px-3 py-1 border border-red-500 text-red-500 rounded hover:bg-red-500 hover:text-white transition text-sm">
-                                Cerrar sesión
-                            </button>
-                        </form>
+                    <!-- 🟦 Nuevo Menú de Usuario -->
+                    <div class="relative" sec:authorize="isAuthenticated()">
+                        <button type="button" 
+                                onclick="document.getElementById('userMenu').classList.toggle('hidden'); 
+                                        document.getElementById('userArrow').classList.toggle('rotate-180')"
+                                class="flex items-center text-gray-700 hover:text-blue-600 transition gap-1">
+                            <svg xmlns="http://www.w3.org/2000/svg" 
+                                class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <circle cx="12" cy="8" r="4" stroke-width="2" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M4 20c0-4 4-6 8-6s8 2 8 6" />
+                            </svg>
+                            <svg id="userArrow" class="w-4 h-4 transition-transform duration-300" 
+                                fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+
+                        <ul id="userMenu" 
+                            class="hidden absolute right-0 mt-2 bg-white border rounded shadow-md py-2 w-50 z-50">
+                            <li class="px-4 py-2 text-gray-700 border-b">
+                                <span class="font-medium" sec:authentication="principal.username"></span>
+                            </li>
+                            <li>
+                                <form th:action="@{/logout}" method="post">
+                                    <button type="submit" 
+                                            class="block w-full text-left px-4 py-2 text-red-500 hover:bg-gray-100">
+                                        Cerrar Sesión
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -118,7 +136,7 @@
                 <div sec:authorize="isAuthenticated()" class="flex items-center justify-between">
                     <span class="text-gray-700">👋 <span sec:authentication="principal.username"></span></span>
                     <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="text-red-600 hover:underline">Cerrar sesión</button>
+                        <button type="submit" class="text-red-600 hover:underline">Cerrar Sesión</button>
                     </form>
                 </div>
             </div>
@@ -127,4 +145,5 @@
 
     <!-- Espaciado -->
     <div class="h-16"></div>
+
 </div>
