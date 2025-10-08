@@ -6,6 +6,7 @@
     <meta name="_csrf" th:content="${_csrf.token}"/>
     <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Productos - MiTienda</title>
+    <script th:src="@{/js/alert.js}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- Favicon -->
@@ -174,7 +175,7 @@
             const cantidad = parseInt(document.getElementById('qty').value);
 
             if (!productoId || cantidad < 1) {
-                alert('Cantidad inválida o producto no encontrado.');
+                showAlert('warning', '🛒 Precaución', 'Cantidad inválida o producto no encontrado.');
                 return;
             }
 
@@ -194,14 +195,14 @@
 
                 if (response.ok) {
                     const data = await response.json();
-                    alert('🛒 Producto agregado al carrito correctamente (' + data.totalItems + ' artículos)');
+                    showAlert('success', '🛒 Producto agregado', 'El producto se añadió al carrito correctamente.');
                     closeModal();
                 } else {
-                    alert('Error al agregar al carrito');
+                    showAlert('error', '🛒 Producto no agregado', 'Error al agregar el producto al carrito.');
                 }
             } catch (err) {
                 console.error(err);
-                alert('Error al conectar con el servidor');
+                showAlert('error', '👤 Error de Sesión', 'Inicie Sesión o Regístrese para poder realizar sus Compras.');
             }
         });
 

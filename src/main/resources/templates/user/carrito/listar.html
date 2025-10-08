@@ -6,7 +6,19 @@
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>Carrito - MiTienda</title>
+    <script th:src="@{/js/alert.js}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <style>
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+            .animate-fadeIn {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
 </head>
 <body class="bg-gray-300 min-h-screen flex flex-col">
 
@@ -150,7 +162,10 @@
             </section>
 
         </main>
-        
+
+        <!-- Footer -->
+        <div th:replace="~{fragments/footer :: footer}"></div>
+
     </div>
 
     <script>
@@ -169,11 +184,14 @@
                 })
                 .then(r => r.json())
                 .then(data => {
-                if (data.ok) {
-                    location.reload();
-                } else {
-                    alert("Error al eliminar el producto");
-                }
+                    if (data.ok) {
+                        showAlert('info', '🛒 Confirmado Eliminación', 'Producto fue Eliminado de la lista.');
+                        setTimeout(() => {
+                            location.reload();
+                        }, 2500);
+                    } else {
+                        showAlert('error', '🛒 Error de Eliminación', 'No se pudo Eliminar el Producto de la lista.');
+                    }
                 });
             });
         });
@@ -206,16 +224,11 @@
                 })
                 .then(res => res.json())
                 .then(data => {
-                    // Actualizar subtotal de la fila
                     const precio = parseFloat(item.querySelector('dd').textContent);
                     const nuevoSubtotal = (precio * cantidad).toFixed(2);
                     item.querySelector('p span').textContent = nuevoSubtotal;
 
-                    // Actualizar totales
                     actualizarTotales(data.subtotal, data.igv, data.total);
-                    //document.getElementById('subtotal').textContent = data.subtotal.toFixed(2);
-                    //document.getElementById('igv').textContent = data.igv.toFixed(2);
-                    //document.getElementById('total').textContent = data.total.toFixed(2);
                 });
             });
 
