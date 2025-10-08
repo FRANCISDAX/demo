@@ -3,6 +3,8 @@
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
     <title>Productos - MiTienda</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
@@ -93,7 +95,8 @@
                         </div>
                     </div>
 
-                    <button class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                    <button id="btnAddToCart" 
+                        class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
                         AGREGAR AL CARRITO
                     </button>
                 </div>
@@ -156,8 +159,6 @@
                     } finally {
                         spinner.classList.add('hidden');
                     }
-
-                    // 🔹 Volver a registrar eventos tras recargar fragmento.
                     registrarEventosFiltro();
                     registrarEventosModal();
                 });
@@ -166,6 +167,43 @@
 
         registrarEventosFiltro();
         registrarEventosModal();
+
+        const btnAddToCart = document.getElementById('btnAddToCart');
+        btnAddToCart.addEventListener('click', async () => {
+            const productoId = document.querySelector('[data-modal-target][data-nombre="' + document.getElementById('modalTitle').innerText + '"]')?.getAttribute('data-id');
+            const cantidad = parseInt(document.getElementById('qty').value);
+
+            if (!productoId || cantidad < 1) {
+                alert('Cantidad inválida o producto no encontrado.');
+                return;
+            }
+
+            const token = document.querySelector('meta[name="_csrf"]').content;
+            const header = document.querySelector('meta[name="_csrf_header"]').content;
+            try {
+                const response = await fetch('/carrito/agregar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        [header]: token 
+                    },
+                    body: JSON.stringify({ productoId, cantidad }),
+                    credentials:"same-origin"
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    alert('🛒 Producto agregado al carrito correctamente (' + data.totalItems + ' artículos)');
+                    closeModal();
+                } else {
+                    alert('Error al agregar al carrito');
+                }
+            } catch (err) {
+                console.error(err);
+                alert('Error al conectar con el servidor');
+            }
+        });
 
     </script>
 

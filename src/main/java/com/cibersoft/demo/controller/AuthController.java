@@ -61,10 +61,5 @@ public class AuthController {
 
         return "redirect:/";
     }
-    
-    @GetMapping("/compras")
-    public String Comprar() {
-        return "compras";
-    }
-    
+        
 }

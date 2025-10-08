@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <meta name="_csrf_header" th:content="${_csrf.headerName}" />
+    <title>Carrito - MiTienda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-300 min-h-screen flex flex-col">
+
+    <div class="layout flex flex-col min-h-screen">
+
+        <!-- Header -->
+        <div th:replace="~{fragments/header :: header('Inicio')}"></div>
+
+        <main class="flex-1">
+
+            <section>
+
+                <div class="mx-auto max-w-screen-md px-4 py-8 sm:px-6 sm:py-12 lg:px-8 mt-12">
+
+                    <div class="mx-auto max-w-3xl">
+
+                        <header class="text-center">
+                            <h1 class="text-xl font-bold text-gray-900 sm:text-3xl">Carrito de Compras</h1>
+                        </header>
+
+                        <div class="mt-8">
+
+                            <div th:if="${#lists.isEmpty(carrito)}" class="text-3xl text-center text-gray-500 py-10">
+                                🛒 Tu carrito está vacío
+                            </div>
+                            
+                            <ul class="space-y-4" th:if="${#lists.isEmpty(carrito) == false}">
+
+                                <li th:each="item : ${carrito}"
+                                    th:attr="data-producto-id=${item.productoId}"
+                                    class="flex items-center gap-4">
+
+                                    <img th:src="@{${item.imagenUrl}}"
+                                        alt="Imágen del producto"
+                                        class="size-16 rounded-sm object-cover" />
+
+                                    <div>
+
+                                        <h3 th:text="${item.nombre}" class="text-sm text-gray-900"></h3>
+
+                                        <dl class="mt-0.5 space-y-px text-[14px] text-gray-600">
+                                            <div>
+                                                <dt class="inline">Precio:</dt>
+                                                <dd class="inline" th:text="${item.precio}">0</dd>
+                                            </div>
+                                        </dl>
+
+                                    </div>
+
+                                    <div class="flex flex-1 items-center justify-end gap-6">
+
+                                            <input
+                                                type="number"
+                                                min="1"
+                                                th:value="${item.cantidad}"
+                                                id="Line1Qty"
+                                                class="cantidad-input h-8 w-12 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600" />
+                                            
+                                            <p class="text-sm font-semibold text-gray-800">
+                                                <span th:text="${item.subtotal}"></span>
+                                            </p>
+                                            
+
+                                        <button type="button"
+                                            th:attr="data-id=${item.productoId}" 
+                                            class="btn-eliminar text-gray-500 hover:text-red-600 transition">
+                                            <span class="sr-only">Remove item</span>
+
+                                            <svg
+                                            xmlns="http://www.w3.org/2000/svg"
+                                            fill="none"
+                                            viewBox="0 0 24 24"
+                                            stroke-width="1.5"
+                                            stroke="currentColor"
+                                            class="size-4"
+                                            >
+                                            <path
+                                                stroke-linecap="round"
+                                                stroke-linejoin="round"
+                                                d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0"
+                                            />
+                                            </svg>
+                                        </button>
+
+                                    </div>
+                                    
+                                </li>
+
+                            </ul>
+
+                            <div class="mt-8 flex justify-end border-t border-gray-100 pt-8">
+
+                                <div class="w-screen max-w-lg space-y-4">
+
+                                    <dl class="space-y-0.5 text-sm text-gray-700">
+                                        <div class="flex justify-between">
+                                            <dt>Subtotal</dt>
+                                            <dd id="subtotal"
+                                                class="transition-opacity duration-300" 
+                                                th:text="${#numbers.formatDecimal(subtotal, 1, 'COMMA', 2, 'POINT')}">0.00</dd>
+                                        </div>
+
+                                        <div class="flex justify-between items-center">
+                                            <dt class="flex items-center gap-4">
+                                                <span>IGV 18%</span>
+                                                <input type="checkbox" id="chkIgv" class="accent-blue-600 cursor-pointer" checked />
+                                            </dt>
+                                            <dd id="igv" th:text="${#numbers.formatDecimal(igv, 1, 'COMMA', 2, 'POINT')}">0.00</dd>
+                                        </div>
+
+                                        <div class="flex justify-between">
+                                            <dt>Descuento</dt>
+                                            <dd>0.00</dd>
+                                        </div>
+
+                                        <div class="flex justify-between !text-base font-medium">
+                                            <dt>Total</dt>
+                                            <dd id="total" 
+                                                class="transition-opacity duration-300"
+                                                th:text="${#numbers.formatDecimal(total, 1, 'COMMA', 2, 'POINT')}">0.00</dd>
+                                        </div>
+                                    </dl>
+
+                                    <div class="flex justify-end">
+                                        <a href="#"
+                                            class="block rounded-sm bg-gray-700 px-5 py-3 text-sm text-gray-100 transition hover:bg-gray-600">
+                                            Finalizar Compra
+                                        </a>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+        </main>
+        
+    </div>
+
+    <script>
+        const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
+        const header = document.querySelector('meta[name="_csrf_header"]').getAttribute('content');
+        document.querySelectorAll(".btn-eliminar").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const productoId = btn.getAttribute("data-id");
+
+                fetch("/carrito/eliminar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json",
+                            [header]: token 
+                },
+                body: JSON.stringify({ productoId })
+                })
+                .then(r => r.json())
+                .then(data => {
+                if (data.ok) {
+                    location.reload();
+                } else {
+                    alert("Error al eliminar el producto");
+                }
+                });
+            });
+        });
+
+        document.querySelectorAll('.cantidad-input').forEach(input => {
+
+            input.addEventListener('input', function() {
+                if (this.value <= 0 || isNaN(this.value)) {
+                    this.value = 1;
+                }
+            });
+
+            input.addEventListener('change', function() {
+                const item = this.closest('li');
+                const productoId = item.getAttribute('data-producto-id');
+                const cantidad = this.value;
+
+                if (isNaN(cantidad) || cantidad < 1) {
+                    cantidad = 1;
+                    this.value = 1;
+                }
+                
+                fetch('/carrito/actualizar', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                        [header]: token
+                    },
+                    body: `productoId=${productoId}&cantidad=${cantidad}`
+                })
+                .then(res => res.json())
+                .then(data => {
+                    // Actualizar subtotal de la fila
+                    const precio = parseFloat(item.querySelector('dd').textContent);
+                    const nuevoSubtotal = (precio * cantidad).toFixed(2);
+                    item.querySelector('p span').textContent = nuevoSubtotal;
+
+                    // Actualizar totales
+                    actualizarTotales(data.subtotal, data.igv, data.total);
+                    //document.getElementById('subtotal').textContent = data.subtotal.toFixed(2);
+                    //document.getElementById('igv').textContent = data.igv.toFixed(2);
+                    //document.getElementById('total').textContent = data.total.toFixed(2);
+                });
+            });
+
+        });
+
+        function actualizarTotales(subtotal, igv, total) {
+            const subtotalElem = document.getElementById("subtotal");
+            const igvElem = document.getElementById("igv");
+            const totalElem = document.getElementById("total");
+
+            subtotalElem.style.opacity = 0;
+            igvElem.style.opacity = 0;
+            totalElem.style.opacity = 0;
+
+            setTimeout(() => {
+                subtotalElem.textContent = `${subtotal.toFixed(2)}`;
+                let igvFinal = chkIgv.checked ? igv : 0;
+                let totalFinal = chkIgv.checked ? total : subtotal;
+                igvElem.textContent = `${igvFinal.toFixed(2)}`;
+                totalElem.textContent = `S/ ${totalFinal.toFixed(2)}`;
+                subtotalElem.style.opacity = 1;
+                igvElem.style.opacity = 1;
+                totalElem.style.opacity = 1;
+            }, 400);
+        }
+
+        const chkIgv = document.getElementById("chkIgv");
+        const estadoGuardado = localStorage.getItem("igvActivo");
+        if (estadoGuardado !== null) {
+            chkIgv.checked = estadoGuardado === "true";
+        }
+        chkIgv.addEventListener("change", () => {
+            localStorage.setItem("igvActivo", chkIgv.checked);
+            recalcularTotales();
+        });
+
+        function recalcularTotales() {
+            const subtotalElem = document.getElementById("subtotal");
+            const totalElem = document.getElementById("total");
+            const igvElem = document.getElementById("igv");
+
+            const subtotal = parseFloat(subtotalElem.textContent.replace(/[^\d.-]/g, "")) || 0;
+            let igv = 0;
+            let total = subtotal;
+
+            if (chkIgv.checked) {
+                igv = subtotal * 0.18;
+                total = subtotal + igv;
+            }
+
+            igvElem.textContent = igv.toFixed(2);
+            totalElem.textContent = `S/ ${total.toFixed(2)}`;
+        }
+
+        document.addEventListener("DOMContentLoaded", recalcularTotales);
+
+    </script>
+
+</body>
+</html>

@@ -26,22 +26,35 @@
                 <!-- Menú principal (desktop) -->
                 <div class="hidden md:flex md:items-center md:space-x-6">
                     <a th:href="@{/}" 
-                       th:classappend="${currentUri == '/'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
-                       class="transition">Inicio</a>
+                        th:classappend="${currentUri == '/'} 
+                            ? 'text-blue-600 font-semibold border-b-2 border-blue-600 pb-1' 
+                            : 'text-gray-700 hover:text-blue-600'"
+                        class="transition">Inicio</a>
 
                     <a th:href="@{/productos}" 
-                       th:classappend="${currentUri == '/productos'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
-                       class="transition">Productos</a>
+                        th:classappend="${currentUri == '/productos'} 
+                            ? 'text-blue-600 font-semibold border-b-2 border-blue-600 pb-1' 
+                            : 'text-gray-700 hover:text-blue-600'"
+                        class="transition">Productos</a>
 
                     <a th:href="@{/nosotros}" 
-                       th:classappend="${currentUri == '/nosotros'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
-                       class="transition">Nosotros</a>
+                        th:classappend="${currentUri == '/nosotros'} 
+                            ? 'text-blue-600 font-semibold border-b-2 border-blue-600 pb-1' 
+                            : 'text-gray-700 hover:text-blue-600'"
+                        class="transition">Nosotros</a>
 
                     <!-- Carrito -->
                     <a th:href="@{/carrito}" sec:authorize="hasRole('USER')"
-                       th:classappend="${currentUri == '/carrito'} ? 'text-blue-600 font-semibold' : 'text-gray-700 hover:text-blue-600'"
-                       class="flex items-center transition">
-                        🛒 <span class="ml-1">Mi Carrito</span>
+                        th:classappend="${currentUri == null} 
+                            ? 'text-blue-600 font-semibold border-b-2 border-blue-600 pb-1' 
+                            : 'text-gray-700 hover:text-blue-600'"
+                        class="flex items-center transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16" class="w-5 h-5">
+                            <path d="M0 1a1 1 0 0 1 1-1h1.11a.5.5 0 0 1 .485.379L2.89 2H14.5a.5.5 0 0 1 .49.598l-1.5 6A.5.5 0 0 1 13 9H4a.5.5 0 0 1-.49-.402L2.01 2.607 1.61 1H1a1 1 0 0 1-1-1z"/>
+                            <circle cx="6" cy="13" r="1"/>
+                            <circle cx="11" cy="13" r="1"/>
+                        </svg>
+                        <span class="ml-1">Mi Carrito</span>
                     </a>
 
                     <!-- Menú Admin -->
@@ -49,7 +62,10 @@
                         <button type="button" 
                                 onclick="document.getElementById('adminMenu').classList.toggle('hidden'); 
                                         document.getElementById('arrowIcon').classList.toggle('rotate-180')"
-                                class="text-gray-700 hover:text-blue-600 transition flex items-center gap-1">
+                                        th:classappend="${currentUri == null} 
+                                            ? 'text-blue-600 font-semibold border-b-2 border-blue-600 pb-1' 
+                                            : 'text-gray-700 hover:text-blue-600'"
+                                class="hover:text-blue-600 transition flex items-center gap-1">
                             Panel Admin
                             <!-- Icono flecha -->
                             <svg id="arrowIcon" class="w-4 h-4 transition-transform duration-300" 
@@ -59,7 +75,7 @@
                                     d="M19 9l-7 7-7-7"></path>
                             </svg>
                         </button>
-
+                        
                         <ul id="adminMenu" class="hidden absolute mt-2 bg-white border rounded shadow-md py-2 w-40">
                             <li><a th:href="@{/admin/usuarios}" class="block px-4 py-2 hover:bg-gray-100">Usuarios</a></li>
                             <li><a th:href="@{/admin/categorias}" class="block px-4 py-2 hover:bg-gray-100">Categorías</a></li>

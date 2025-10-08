@@ -77,8 +77,4 @@ public class AdminController {
         return "redirect:/admin/usuarios";
     }
 
-    // Compras
-    @GetMapping("/compras")
-    public String listarComprasAdmin(Model model) { return "admin/compras/lista"; }
-
 }
