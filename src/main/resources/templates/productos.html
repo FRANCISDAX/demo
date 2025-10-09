@@ -96,10 +96,27 @@
                         </div>
                     </div>
 
-                    <button id="btnAddToCart" 
-                        class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
-                        AGREGAR AL CARRITO
-                    </button>
+                    <a sec:authorize="hasRole('USER')">
+                        <button id="btnAddToCart" 
+                            class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                            AGREGAR AL CARRITO
+                        </button>
+                    </a>
+
+                    <a sec:authorize="isAnonymous()">
+                        <button id="#" 
+                            class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                            INICIA SESION O REGISTRESE
+                        </button>
+                    </a>
+
+                    <a sec:authorize="hasRole('ADMIN')">
+                        <button id="#" 
+                            class="mt-6 w-full bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition">
+                            SOLO PARA USUARIOS REGISTRADOS
+                        </button>
+                    </a>
+
                 </div>
 
             </div>

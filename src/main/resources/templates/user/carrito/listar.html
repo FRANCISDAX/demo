@@ -6,7 +6,6 @@
     <meta name="_csrf" th:content="${_csrf.token}" />
     <meta name="_csrf_header" th:content="${_csrf.headerName}" />
     <title>Carrito - MiTienda</title>
-    <script th:src="@{/js/alert.js}"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Favicon -->
     <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
@@ -167,6 +166,8 @@
         <div th:replace="~{fragments/footer :: footer}"></div>
 
     </div>
+
+    <script th:src="@{/js/alertModal.js}"></script>
 
     <script>
         const token = document.querySelector('meta[name="_csrf"]').getAttribute('content');
