@@ -78,7 +78,7 @@
                                                 class="cantidad-input h-8 w-12 rounded-sm border-gray-200 bg-gray-50 p-0 text-center text-xs text-gray-600" />
                                             
                                             <p class="text-sm font-semibold text-gray-800">
-                                                <span th:text="${item.subtotal}"></span>
+                                                <span th:text="${#numbers.formatDecimal(item.subtotal, 1, 'COMMA', 2, 'POINT')}"></span>
                                             </p>
                                             
 
@@ -280,7 +280,7 @@
             }
 
             igvElem.textContent = igv.toFixed(2);
-            totalElem.textContent = `S/ ${total.toFixed(2)}`;
+            totalElem.textContent = `S/ ${total.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",")}`;
         }
 
         document.addEventListener("DOMContentLoaded", recalcularTotales);

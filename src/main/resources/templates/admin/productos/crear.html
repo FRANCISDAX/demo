@@ -3,19 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <title>Crear Producto - MiTienda</title>
+    <script th:src="@{/js/alertModal.js}"></script>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Estilos personalizados (opcional) -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- Favicon -->
     <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+    <style>
+        /* Animación de entrada suave */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+        animation: fadeIn 0.5s ease-out;
+        }
+    </style>
 </head>
 <body class="bg-gray-50 min-h-screen flex flex-col">
-
-    <!-- Notificaciones -->
-    <div th:replace="~{fragments/notify :: notificaciones}"></div>
 
     <!-- Header -->
     <div th:replace="~{fragments/header :: header(title='Crear Producto')}"></div>
@@ -30,11 +36,13 @@
                     <h2 class="text-xl font-bold text-yellow-500">Registrar Nuevo Producto</h2>
                 </div>
 
-                <form th:action="@{/admin/productos/crear}"
-                      th:object="${producto}"
-                      method="post"
-                      enctype="multipart/form-data"
-                      class="space-y-5">
+                <!-- Formulario -->
+                <form id="formProducto" 
+                    th:action="@{/admin/productos/crear}"
+                    th:object="${producto}"
+                    method="post"
+                    enctype="multipart/form-data"
+                    class="space-y-5">
 
                     <!-- Nombre -->
                     <div>
@@ -175,7 +183,7 @@
                     <!-- Botones -->
                     <div class="flex items-center justify-center space-x-4 pt-4">
                         <button type="submit"
-                                class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition transform hover:scale-105 w-36">
+                            class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition transform hover:scale-105 w-36">
                             <i class="bi bi-save me-1"></i> Guardar
                         </button>
                         <a th:href="@{/admin/productos}"
@@ -187,7 +195,9 @@
                 </form>
 
             </div>
+
         </div>
+
     </main>
 
     <!-- Footer -->

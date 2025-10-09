@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Actualizar Categoría - MiTienda</title>
+    <script th:src="@{/js/alertModal.js}"></script>
     <!-- Tailwind CSS v3.x -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Estilos personalizados (opcional) -->
@@ -38,10 +39,11 @@
                     <h2 class="text-xl font-bold text-yellow-500">Actualizar Categoría</h2>
                 </div>
 
-                <form th:action="@{/admin/categorias/editar/{id}(id=${categoria.id})}"
-                      th:object="${categoria}"
-                      method="post"
-                      class="space-y-5">
+                <form id="formCategoria" 
+                    th:action="@{/admin/categorias/editar/{id}(id=${categoria.id})}"
+                    th:object="${categoria}"
+                    method="post"
+                    class="space-y-5">
 
                     <!-- Nombre -->
                     <div>
@@ -50,7 +52,7 @@
                                type="text"
                                th:field="*{nombre}"
                                class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition"
-                               placeholder="Ej: Ropa"
+                               placeholder="Ej: ROPA"
                                required />
                         <div class="text-red-500 text-xs mt-1"
                              th:if="${#fields.hasErrors('nombre')}"
@@ -84,7 +86,7 @@
                     <!-- Botones con ancho fijo y iconos -->
                     <div class="flex justify-center space-x-4 pt-4">
                         <button type="submit"
-                                class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition transform hover:scale-105 w-30">
+                            class="px-6 py-2 bg-green-600 text-white font-medium rounded-lg hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 transition transform hover:scale-105 w-30">
                             <i class="bi bi-check-circle me-1"></i> Actualizar
                         </button>
                         <a th:href="@{/admin/categorias}"
@@ -96,7 +98,9 @@
                 </form>
 
             </div>
+
         </div>
+
     </main>
 
     <!-- Footer -->

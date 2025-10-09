@@ -28,17 +28,32 @@ public class CategoriaController {
     private final ProductoService productoService;
 
     @GetMapping
-    public String listarCategorias(Model model) {
+    public String listarCategorias(Model model,
+        @ModelAttribute("successMessage") String successMessage, 
+        @ModelAttribute("warningMessage") String warningMessage, 
+        @ModelAttribute("errorMessage") String errorMessage) {
+
         model.addAttribute("categorias", categoriaService.listarTodas());
+
+        if (successMessage != null && !successMessage.isEmpty()) 
+            model.addAttribute("successMessage", successMessage); 
+        if (warningMessage != null && !warningMessage.isEmpty()) 
+            model.addAttribute("warningMessage", warningMessage); 
+        if (errorMessage != null && !errorMessage.isEmpty()) 
+            model.addAttribute("errorMessage", errorMessage);
+
         return "admin/categorias/listar";
+
     }
 
     @GetMapping("/crear")
     public String mostrarFormularioCrear(Model model) {
         model.addAttribute("categoria", new Categoria());
-        return "admin/categorias/crear";
-    }
 
+        return "admin/categorias/crear";
+
+    }
+ 
     @PostMapping("/crear")
     public String guardarCategoria(@Valid 
         @ModelAttribute("categoria") Categoria categoria,
@@ -52,23 +67,13 @@ public class CategoriaController {
 
         try {
             categoriaService.guardar(categoria);
-            model.addAttribute("exito", "Categoría registrado correctamente.");
-            redirectAttributes.addFlashAttribute("successMessage", "Categoría registrado correctamente");
+            redirectAttributes.addFlashAttribute("successMessage", "Categoría registrado correctamente.");
             return "redirect:/admin/categorias";
         } catch (DataIntegrityViolationException e) {
             bindingResult.rejectValue("nombre", "error.categoria", "⚠️ El nombre de la categoría ya existe.");
             return "admin/categorias/crear";
         }
-    }
-
-    @PostMapping("/guardar")
-    public String guardar(@Valid @ModelAttribute("categoria") Categoria categoria,
-                          BindingResult result) {
-        if (result.hasErrors()) {
-            return "admin/categorias/crear";
-        }
-        categoriaService.guardar(categoria);
-        return "redirect:/admin/categorias";
+        
     }
 
     @GetMapping("/editar/{id}")

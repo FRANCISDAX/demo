@@ -51,12 +51,12 @@
     </div>
 
     <div th:if="${productos.empty}" 
-         class="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-3 rounded">
+        class="bg-blue-100 border border-blue-300 text-blue-800 px-4 py-3 rounded">
         No hay productos disponibles en este momento.
     </div>
 
-    <div th:unless="${productos.empty}" 
-         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
+    <div th:unless="${productos.empty}"
+        class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
 
         <div th:each="producto : ${productos}">
             <div th:replace="~{fragments/card :: card(producto=${producto})}"></div>

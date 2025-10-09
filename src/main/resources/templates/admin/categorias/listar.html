@@ -3,26 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>Categorías - MiTienda</title>
-    <!-- Tailwind CSS v3.x -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Estilos personalizados (opcional) -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
-    <!-- Bootstrap Icons (puedes reemplazar con Heroicons si lo prefieres) -->
+    <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- Favicon -->
     <link rel="icon" type="image/png" th:href="@{/images/favicon.png}">
+
 </head>
 <body class="bg-gray-100 min-h-screen flex flex-col">
 
     <div class="layout flex flex-col min-h-screen">
 
-        <!-- Notificaciones -->
-        <div th:replace="~{fragments/notify :: notificaciones}"></div>
-
         <!-- Header -->
         <div th:replace="~{fragments/header :: header('Inicio')}"></div>
 
         <main class="flex-1 container mx-auto px-4 py-6">
+            <!-- Encabezado -->
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Listado de Categorías</h2>
                 <a th:href="@{/admin/categorias/crear}"
@@ -40,8 +37,8 @@
 
             <!-- Tabla de categorías -->
             <div th:unless="${categorias.empty}"
-                 class="overflow-hidden rounded-lg shadow-sm border border-gray-200">
-                <table class="min-w-full bg-white">
+                 class="overflow-x-auto w-full rounded-lg shadow-sm border border-gray-200">
+                <table class="min-w-full bg-white text-sm">
                     <thead class="bg-gray-800 text-white">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Categoría</th>
@@ -71,10 +68,10 @@
                                        title="Editar">
                                         <i class="bi bi-pencil-square mr-1"></i> Editar
                                     </a>
-                                    <a th:href="@{/admin/categorias/eliminar/{id}(id=${categoria.id})}"
-                                       class="inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white transition w-28"
-                                       title="Eliminar"
-                                       onclick="return confirm('¿Seguro de eliminar esta categoría?')">
+                                    <a href="#"
+                                        class="btn-eliminar inline-flex items-center justify-center px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white transition w-28"
+                                        title="Eliminar"
+                                        th:data-id="${categoria.id}">
                                         <i class="bi bi-trash mr-1"></i> Eliminar
                                     </a>
                                 </div>
@@ -89,6 +86,58 @@
         <div th:replace="~{fragments/footer :: footer}"></div>
 
     </div>
+
+    <script th:src="@{/js/alertModal.js}"></script>
+
+    <script th:inline="javascript">
+        document.addEventListener("DOMContentLoaded", () => {
+            const successMessage = /*[[${successMessage}]]*/ null;
+            const warningMessage = /*[[${warningMessage}]]*/ null;
+            const errorMessage   = /*[[${errorMessage}]]*/ null;
+
+            if (successMessage) {
+                showAlert('success', 'Éxito', successMessage);
+            } else if (warningMessage) {
+                showAlert('warning', 'Atención', warningMessage);
+            } else if (errorMessage) {
+                showAlert('error', 'Error', errorMessage);
+            }
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.btn-eliminar').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                const categoriaId = this.getAttribute('data-id');
+                const modal = document.getElementById('confirmModal');
+
+                document.getElementById('confirmTitle').textContent = `¿ Desea eliminar esta Categoría ?`;
+
+                modal.classList.remove('hidden');
+
+                // Botones del modal
+                const acceptBtn = document.getElementById('confirmAccept');
+                const cancelBtn = document.getElementById('confirmCancel');
+
+                // Limpiar eventos previos
+                acceptBtn.onclick = null;
+                cancelBtn.onclick = null;
+
+                // Cancelar
+                cancelBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                };
+
+                // Confirmar eliminación
+                acceptBtn.onclick = () => {
+                    modal.classList.add('hidden');
+                    // Redirigir a la URL de eliminación
+                    window.location.href = `/admin/categorias/eliminar/${categoriaId}`;
+                };
+            });
+        });
+    </script>
 
 </body>
 </html>

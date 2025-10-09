@@ -5,8 +5,6 @@
     <title>Productos - MiTienda</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Estilos personalizados (opcional) -->
-    <link th:href="@{/css/style.css}" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <!-- Favicon -->
@@ -16,14 +14,11 @@
 
     <div class="layout flex flex-col min-h-screen">
 
-        <!-- Notificaciones -->
-        <div th:replace="~{fragments/notify :: notificaciones}"></div>
-
         <!-- Header -->
         <div th:replace="~{fragments/header :: header('Inicio')}"></div>
 
         <main class="flex-1 container mx-auto px-4 py-6">
-            <!-- Encabezado con título y botón -->
+            <!-- Encabezado -->
             <div class="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Listado de Productos</h2>
                 <a th:href="@{/admin/productos/crear}"
@@ -41,14 +36,14 @@
 
             <!-- Tabla de productos -->
             <div th:unless="${productos.empty}"
-                 class="overflow-hidden rounded-lg shadow-sm border border-gray-200">
-                <table class="min-w-full bg-white">
+                class="overflow-x-auto w-full rounded-lg shadow-sm border border-gray-200">
+                <table class="min-w-full bg-white text-sm">
                     <thead class="bg-gray-800 text-white">
                         <tr>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Nombre</th>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Categoría</th>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Descripción</th>
-                            <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Precio</th>
+                            <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Precio S/</th>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Stock</th>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Activo</th>
                             <th scope="col" class="px-6 py-3 text-left text-sm font-medium uppercase tracking-wider">Destacado</th>
@@ -60,7 +55,8 @@
                             <td class="px-6 py-4 whitespace-normal font-medium text-gray-800" th:text="${producto.nombre}">Nombre</td>
                             <td class="px-6 py-4 text-gray-600" th:text="${producto.categoria?.nombre ?: 'Sin categoría'}">Categoría</td>
                             <td class="px-6 py-4 text-gray-600" th:text="${#strings.abbreviate(producto.descripcion, 50)}">Descripción</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-gray-900 font-medium" th:text="${'S/ ' + #numbers.formatDecimal(producto.precio, 1, 2)}">0.00</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-gray-900 font-medium" 
+                                th:text="${#numbers.formatDecimal(producto.precio, 1, 'COMMA', 2, 'POINT')}">0.00</td>
                             <td class="px-6 py-4 whitespace-nowrap text-gray-800" th:text="${producto.stock}">0</td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span th:if="${producto.activo}"
@@ -89,10 +85,10 @@
                                        title="Editar">
                                         <i class="bi bi-pencil-square mr-1"></i> Editar
                                     </a>
-                                    <a th:href="@{/admin/productos/eliminar/{id}(id=${producto.id})}"
-                                       class="inline-flex items-center justify-center w-28 px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white transition"
+                                    <a href="#"
+                                       class="btn-eliminar inline-flex items-center justify-center w-28 px-3 py-1.5 text-sm font-medium text-red-600 bg-white border border-red-600 rounded hover:bg-red-600 hover:text-white transition"
                                        title="Eliminar"
-                                       onclick="return confirm('¿Seguro de eliminar este producto?')">
+                                       th:data-id="${producto.id}">
                                         <i class="bi bi-trash mr-1"></i> Eliminar
                                     </a>
                                 </div>
@@ -105,6 +101,58 @@
 
         <!-- Footer -->
         <div th:replace="~{fragments/footer :: footer}"></div>
+
+        <script th:src="@{/js/alertModal.js}"></script>
+
+        <script th:inline="javascript">
+            document.addEventListener("DOMContentLoaded", () => {
+                const successMessage = /*[[${successMessage}]]*/ null;
+                const warningMessage = /*[[${warningMessage}]]*/ null;
+                const errorMessage   = /*[[${errorMessage}]]*/ null;
+
+                if (successMessage) {
+                    showAlert('success', 'Éxito', successMessage);
+                } else if (warningMessage) {
+                    showAlert('warning', 'Atención', warningMessage);
+                } else if (errorMessage) {
+                    showAlert('error', 'Error', errorMessage);
+                }
+            });
+        </script>
+
+        <script>
+            document.querySelectorAll('.btn-eliminar').forEach(btn => {
+                btn.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const categoriaId = this.getAttribute('data-id');
+                    const modal = document.getElementById('confirmModal');
+
+                    document.getElementById('confirmTitle').textContent = `¿ Desea eliminar este Producto ?`;
+
+                    modal.classList.remove('hidden');
+
+                    // Botones del modal
+                    const acceptBtn = document.getElementById('confirmAccept');
+                    const cancelBtn = document.getElementById('confirmCancel');
+
+                    // Limpiar eventos previos
+                    acceptBtn.onclick = null;
+                    cancelBtn.onclick = null;
+
+                    // Cancelar
+                    cancelBtn.onclick = () => {
+                        modal.classList.add('hidden');
+                    };
+
+                    // Confirmar eliminación
+                    acceptBtn.onclick = () => {
+                        modal.classList.add('hidden');
+                        // Redirigir a la URL de eliminación
+                        window.location.href = `/admin/productos/eliminar/${categoriaId}`;
+                    };
+                });
+            });
+        </script>
 
     </div>
 

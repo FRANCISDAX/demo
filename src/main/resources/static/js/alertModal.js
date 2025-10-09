@@ -51,3 +51,28 @@ function showAlert(type, title, message, duration = 2500) {
     }, duration);
 
 }
+
+function showConfirmModal(title, message, callback) {
+    const modal = document.getElementById('confirmModal');
+    document.getElementById('confirmTitle').textContent = title;
+    document.getElementById('confirmMessage').textContent = message;
+
+    modal.classList.remove('hidden');
+
+    const acceptBtn = document.getElementById('confirmAccept');
+    const cancelBtn = document.getElementById('confirmCancel');
+
+    // Limpiar eventos previos
+    acceptBtn.onclick = null;
+    cancelBtn.onclick = null;
+
+    acceptBtn.onclick = () => {
+        modal.classList.add('hidden');
+        callback(true);
+    };
+
+    cancelBtn.onclick = () => {
+        modal.classList.add('hidden');
+        callback(false);
+    };
+}
