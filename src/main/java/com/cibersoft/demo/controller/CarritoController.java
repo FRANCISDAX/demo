@@ -9,6 +9,7 @@ import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,6 +63,7 @@ public class CarritoController {
 
     @PostMapping("/agregar")
     @ResponseBody
+    @PreAuthorize("hasRole('USER')")
     public Map<String, Object> agregarAlCarrito(@RequestBody Map<String, Object> datos, HttpSession session) {
         Long productoId = Long.valueOf(datos.get("productoId").toString());
         int cantidad = Integer.parseInt(datos.get("cantidad").toString());
